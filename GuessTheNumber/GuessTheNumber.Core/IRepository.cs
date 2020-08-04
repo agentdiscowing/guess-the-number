@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace GuessTheNumber.Core
 {
-    public class Class1
+    public interface IRepository<T> where T: class
     {
+        T Insert(T entity);
+
+        Task SaveChangesAsync();
     }
 }
