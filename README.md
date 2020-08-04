@@ -1,0 +1,1 @@
+An online game where players have to guess a number that was set by another player. 
