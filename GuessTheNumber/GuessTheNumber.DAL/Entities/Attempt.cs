@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GuessTheNumber.DAL.Entities
+﻿namespace GuessTheNumber.DAL.Entities
 {
     public class Attempt
     {

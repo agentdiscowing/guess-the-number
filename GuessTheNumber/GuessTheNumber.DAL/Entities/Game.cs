@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GuessTheNumber.DAL.Entities
+﻿namespace GuessTheNumber.DAL.Entities
 {
-    public class Game: BaseEntity
+    using System;
+
+    public class Game : BaseEntity
     {
         public int OwnerId { get; set; }
 
