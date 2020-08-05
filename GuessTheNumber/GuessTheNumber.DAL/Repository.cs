@@ -1,6 +1,8 @@
 ﻿namespace GuessTheNumber.DAL
 {
     using System;
+    using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using GuessTheNumber.Core;
     using GuessTheNumber.DAL.Entities;
@@ -17,6 +19,11 @@
         {
             this.context = context;
             this.set = context.Set<T>();
+        }
+
+        public IQueryable<T> Find<TProperty>(Expression<Func<T, bool>> predicate, Expression<Func<T, TProperty>> includes)
+        {
+            return this.set.Where(predicate).Include(includes);
         }
 
         public T Insert(T entity)
