@@ -5,8 +5,7 @@
 
     public class GameContext : DbContext
     {
-        public GameContext(DbContextOptions<GameContext> options)
-            : base(options)
+        public GameContext()
         {
         }
 
@@ -33,6 +32,11 @@
             modelBuilder.Entity<Attempt>().HasOne(a => a.Game).WithMany(g => g.Attempts).HasForeignKey(a => a.GameId);
 
             modelBuilder.Entity<User>().HasIndex(u => new { u.Email, u.Username }).IsUnique();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=GameDB;Trusted_Connection=True;");
         }
     }
 }
