@@ -21,9 +21,9 @@
             this.set = context.Set<T>();
         }
 
-        public IQueryable<T> Find<TProperty>(Expression<Func<T, bool>> predicate, Expression<Func<T, TProperty>> includes)
+        public IQueryable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return this.set.Where(predicate).Include(includes);
+            return this.set.Where(predicate);
         }
 
         public T Insert(T entity)

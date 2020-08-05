@@ -12,6 +12,6 @@
 
         Task SaveChangesAsync();
 
-        IQueryable<T> Find<TProperty>(Expression<Func<T, bool>> predicate, Expression<Func<T, TProperty>> includes);
+        IQueryable<T> Find(Expression<Func<T, bool>> predicate);
     }
 }
