@@ -15,10 +15,10 @@
 
         public int? WinnerId { get; set; }
 
-        public User Winner { get; set; }
+        public virtual User Winner { get; set; }
 
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
-        public ICollection<Attempt> Attempts { get; set; }
+        public virtual ICollection<Attempt> Attempts { get; set; }
     }
 }
