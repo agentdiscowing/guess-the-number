@@ -1,11 +1,12 @@
 ﻿namespace GuessTheNumber.DAL
 {
-    using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Core.Entities;
     using Microsoft.EntityFrameworkCore;
 
     public class GameContext : DbContext
     {
-        public GameContext()
+        public GameContext(DbContextOptions<GameContext> options)
+            : base(options)
         {
         }
 
@@ -34,9 +35,5 @@
             modelBuilder.Entity<User>().HasIndex(u => new { u.Email, u.Username }).IsUnique();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=GameDB;Trusted_Connection=True;").UseLazyLoadingProxies();
-        }
     }
 }
