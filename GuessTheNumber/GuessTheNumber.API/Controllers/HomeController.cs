@@ -42,5 +42,20 @@
 
             return Ok(token);
         }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] NewUserContract newUser)
+        {
+            var registeredUser = this.userService.Register(newUser);
+
+            if (registeredUser == null)
+            {
+                return Conflict();
+            }
+
+            var token = this.authManager.Authenticate(registeredUser.Email);
+
+            return Ok(new { token, registeredUser });
+        }
     }
 }
