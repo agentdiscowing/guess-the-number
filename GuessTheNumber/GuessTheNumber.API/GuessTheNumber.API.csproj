@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GuessTheNumber.BLL\GuessTheNumber.BLL.csproj" />
+    <ProjectReference Include="..\GuessTheNumber.Core\GuessTheNumber.Core.csproj" />
     <ProjectReference Include="..\GuessTheNumber.DAL\GuessTheNumber.DAL.csproj" />
   </ItemGroup>
 

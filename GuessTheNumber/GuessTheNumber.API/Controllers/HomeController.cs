@@ -1,9 +1,7 @@
 ﻿namespace GuessTheNumber.API.Controllers
 {
-    using System.Collections.Generic;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -18,14 +16,6 @@
         {
             this.authManager = authenticationManager;
             this.userService = userService;
-        }
-
-        // GET: api/Name
-        [HttpGet]
-        [Authorize]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "you are logined" };
         }
 
         [HttpPost("authenticate")]
