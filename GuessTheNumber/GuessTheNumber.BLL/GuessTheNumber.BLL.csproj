@@ -8,4 +8,10 @@
     <PackageReference Include="Nix.StyleCop.Analyzers" Version="1.0.19" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GuessTheNumber.Core\GuessTheNumber.Core.csproj" />
+    <ProjectReference Include="..\GuessTheNumber.DAL\GuessTheNumber.DAL.csproj" />
+    <ProjectReference Include="..\GuessTheNumber.Utils\GuessTheNumber.Utils.csproj" />
+  </ItemGroup>
+
 </Project>
