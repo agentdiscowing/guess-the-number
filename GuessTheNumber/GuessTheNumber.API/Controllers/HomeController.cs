@@ -18,8 +18,8 @@
             this.userService = userService;
         }
 
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] LoginUserContract creds)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginUserContract creds)
         {
             var loginedUser = this.userService.Login(creds);
 
