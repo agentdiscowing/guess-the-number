@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.DAL.Entities
+﻿namespace GuessTheNumber.Core.Entities
 {
     public abstract class BaseEntity
     {
