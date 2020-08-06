@@ -6,6 +6,7 @@
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core;
     using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Utils;
 
     public class UserService : IUserService
     {
@@ -26,8 +27,7 @@
                 return false;
             }
 
-            // will add hasing later
-            return checkUser.PasswordHash == creds.Password;
+            return PasswordHasher.Verify(creds.Password, checkUser.PasswordHash);
         }
 
         public LoginUserContract Register(NewUserContract newUser)
