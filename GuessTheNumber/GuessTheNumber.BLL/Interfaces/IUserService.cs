@@ -9,6 +9,6 @@ namespace GuessTheNumber.BLL.Interfaces
     {
         bool Login(LoginUserContract creds);
 
-        LoginUserContract Register(NewUserContract newUser);
+        ShortUserInfoContract Register(NewUserContract newUser);
     }
 }
