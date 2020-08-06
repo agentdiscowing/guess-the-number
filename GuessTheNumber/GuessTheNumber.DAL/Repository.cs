@@ -5,7 +5,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using GuessTheNumber.Core;
-    using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Core.Entities;
     using Microsoft.EntityFrameworkCore;
 
     public class Repository<T> : IRepository<T>
@@ -15,10 +15,10 @@
 
         private readonly DbSet<T> set;
 
-        public Repository(DbContext context)
+        public Repository(GameContext context)
         {
             this.context = context;
-            this.set = context.Set<T>();
+            this.set = this.context.Set<T>();
         }
 
         public IQueryable<T> Find(Expression<Func<T, bool>> predicate)

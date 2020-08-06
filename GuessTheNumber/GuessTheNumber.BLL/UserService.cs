@@ -4,7 +4,7 @@
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core;
-    using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Core.Entities;
     using GuessTheNumber.Utils;
 
     public class UserService : IUserService
