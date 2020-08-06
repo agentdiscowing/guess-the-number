@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.BLL.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,12 @@
     {
         private readonly IAuthManager authManager;
 
-        public HomeController(IAuthManager AuthenticationManager)
+        private readonly IUserService userService;
+
+        public HomeController(IAuthManager authenticationManager, IUserService userService)
         {
-            this.authManager = AuthenticationManager;
+            this.authManager = authenticationManager;
+            this.userService = userService;
         }
 
         // GET: api/Name
@@ -27,14 +31,14 @@
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] LoginUserContract creds)
         {
-            // validate creds
+            var loginedUser = this.userService.Login(creds);
 
-            var token = this.authManager.Authenticate(creds.Email, creds.Password);
-
-            if (token == null)
+            if (!loginedUser)
             {
                 return Unauthorized();
             }
+
+            var token = this.authManager.Authenticate(creds.Email);
 
             return Ok(token);
         }
