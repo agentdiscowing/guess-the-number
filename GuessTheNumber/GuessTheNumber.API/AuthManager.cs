@@ -15,14 +15,8 @@
             this.tokenKey = tokenKey;
         }
 
-        public string Authenticate(string email, string password)
+        public string Authenticate(string email)
         {
-            //bussiness rules
-            //if (!Service.Login(creds))
-            //{
-            //    return null;
-            //}
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(this.tokenKey);
             var tokenDescriptor = new SecurityTokenDescriptor

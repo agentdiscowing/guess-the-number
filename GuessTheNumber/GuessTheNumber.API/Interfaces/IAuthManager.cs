@@ -2,6 +2,6 @@
 {
     public interface IAuthManager
     {
-        string Authenticate(string username, string password);
+        string Authenticate(string email);
     }
 }
