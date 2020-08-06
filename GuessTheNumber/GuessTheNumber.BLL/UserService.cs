@@ -16,6 +16,7 @@
             this.userRepository = userRepo;
         }
 
+        // change return type to some Result
         public bool Login(LoginUserContract creds)
         {
             var checkUser = this.userRepository.Find(u => u.Email == creds.Email).FirstOrDefault();
