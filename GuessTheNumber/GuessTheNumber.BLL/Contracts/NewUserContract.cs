@@ -1,0 +1,12 @@
+﻿namespace GuessTheNumber.BLL.Interfaces
+{
+    public class NewUserContract
+    {
+        public string Username { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+    }
+}
