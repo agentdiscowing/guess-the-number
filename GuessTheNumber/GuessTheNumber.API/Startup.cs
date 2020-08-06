@@ -1,5 +1,7 @@
 namespace GuessTheNumber.API
 {
+    using GuessTheNumber.BLL;
+    using GuessTheNumber.BLL.Interfaces;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -44,6 +46,7 @@ namespace GuessTheNumber.API
             });
 
             services.AddSingleton<IAuthManager>(new AuthManager(tokenKey));
+            services.AddScoped(typeof(IUserService), typeof(UserService));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
