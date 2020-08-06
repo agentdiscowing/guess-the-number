@@ -13,6 +13,7 @@ namespace GuessTheNumber.API
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
 
     public class Startup
     {
@@ -26,6 +27,16 @@ namespace GuessTheNumber.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "GuessTheNumber API",
+                    Version = "v1",
+                    Description = "A simple online game built on ASP.NET Core Web API"
+                });
+            });
 
             var tokenKey = this.Configuration.GetValue<string>("TokenKey");
             var key = Encoding.ASCII.GetBytes(tokenKey);
@@ -77,6 +88,10 @@ namespace GuessTheNumber.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
         }
     }
 }
