@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Tests", "Gue
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Core", "GuessTheNumber.Core\GuessTheNumber.Core.csproj", "{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Utils", "GuessTheNumber.Utils\GuessTheNumber.Utils.csproj", "{C3A3B10E-7E7C-4E84-9152-93B4FA380547}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A3B10E-7E7C-4E84-9152-93B4FA380547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A3B10E-7E7C-4E84-9152-93B4FA380547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A3B10E-7E7C-4E84-9152-93B4FA380547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A3B10E-7E7C-4E84-9152-93B4FA380547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

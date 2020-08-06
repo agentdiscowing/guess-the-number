@@ -1,10 +1,7 @@
-﻿using GuessTheNumber.BLL.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GuessTheNumber.BLL.Interfaces
+﻿namespace GuessTheNumber.BLL.Interfaces
 {
+    using GuessTheNumber.BLL.Contracts;
+
     public interface IUserService
     {
         bool Login(LoginUserContract creds);

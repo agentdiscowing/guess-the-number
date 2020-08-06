@@ -34,6 +34,5 @@
 
             modelBuilder.Entity<User>().HasIndex(u => new { u.Email, u.Username }).IsUnique();
         }
-
     }
 }

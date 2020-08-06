@@ -11,6 +11,5 @@
         public string PasswordHash { get; set; }
 
         public virtual ICollection<Game> Games { get; set; }
-
     }
 }
