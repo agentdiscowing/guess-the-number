@@ -1,15 +1,18 @@
 namespace GuessTheNumber.API
 {
+    using System.Text;
     using GuessTheNumber.BLL;
     using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Core.Entities;
+    using GuessTheNumber.DAL;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
-    using System.Text;
 
     public class Startup
     {
@@ -24,7 +27,7 @@ namespace GuessTheNumber.API
         {
             services.AddControllers();
 
-            var tokenKey = Configuration.GetValue<string>("TokenKey");
+            var tokenKey = this.Configuration.GetValue<string>("TokenKey");
             var key = Encoding.ASCII.GetBytes(tokenKey);
 
             services.AddAuthentication(x =>
@@ -47,6 +50,12 @@ namespace GuessTheNumber.API
 
             services.AddSingleton<IAuthManager>(new AuthManager(tokenKey));
             services.AddScoped(typeof(IUserService), typeof(UserService));
+
+            var connectionString = this.Configuration.GetValue<string>("ConnectionString");
+
+            services.AddRepository<User>();
+            services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
+                                                               .UseLazyLoadingProxies());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
