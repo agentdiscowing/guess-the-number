@@ -8,25 +8,26 @@
     using GuessTheNumber.Core.Entities;
     using Microsoft.EntityFrameworkCore;
 
-    public class Repository<T> : IRepository<T>
-        where T : BaseEntity
+    public class Repository<TEntity, TContext> : IRepository<TEntity>
+        where TEntity : BaseEntity
+        where TContext : DbContext
     {
-        private readonly DbContext context;
+        private readonly TContext context;
 
-        private readonly DbSet<T> set;
+        private readonly DbSet<TEntity> set;
 
-        public Repository(GameContext context)
+        public Repository(TContext context)
         {
             this.context = context;
-            this.set = this.context.Set<T>();
+            this.set = this.context.Set<TEntity>();
         }
 
-        public IQueryable<T> Find(Expression<Func<T, bool>> predicate)
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return this.set.Where(predicate);
         }
 
-        public T Insert(T entity)
+        public TEntity Insert(TEntity entity)
         {
             return this.set.Add(entity).Entity;
         }

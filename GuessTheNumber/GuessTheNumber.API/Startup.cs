@@ -64,9 +64,9 @@ namespace GuessTheNumber.API
 
             var connectionString = this.Configuration.GetValue<string>("ConnectionString");
 
-            services.AddRepository<User>();
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
-                                                               .UseLazyLoadingProxies());
+                                                                 .UseLazyLoadingProxies());
+            services.AddRepository<User, GameContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
