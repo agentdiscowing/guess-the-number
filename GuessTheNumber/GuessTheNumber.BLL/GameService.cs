@@ -83,6 +83,11 @@
             return newGame.Number;
         }
 
+        public bool ForceEndGame(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         private Game GetActiveFullGame()
         {
             return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
@@ -90,12 +95,13 @@
 
         private void EndGame(int winnerId)
         {
-            throw new NotImplementedException();
-        }
+            var currGame = this.GetActiveFullGame();
 
-        public bool ForceEndGame(int userId)
-        {
-            throw new NotImplementedException();
+            currGame.EndTime = DateTime.Now;
+
+            currGame.WinnerId = winnerId;
+
+            this.gameRepository.SaveChangesAsync();
         }
     }
 }
