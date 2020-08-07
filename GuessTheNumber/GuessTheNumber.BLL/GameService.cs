@@ -85,7 +85,16 @@
 
         public bool ForceEndGame(int userId)
         {
-            throw new NotImplementedException();
+            var currGame = this.GetActiveFullGame();
+
+            if (currGame.OwnerId == userId)
+            {
+                currGame.EndTime = DateTime.Now;
+                this.gameRepository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
 
         private Game GetActiveFullGame()
