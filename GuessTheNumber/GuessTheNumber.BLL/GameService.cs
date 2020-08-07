@@ -18,7 +18,7 @@ namespace GuessTheNumber.BLL
             this.gameRepository = gameRepo;
         }
 
-        public ShortGameInfoContract GetActiveGame()
+        public ShortGameInfoContract GetActiveGame(int userId)
         {
             var activeGame = this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
 
@@ -27,10 +27,17 @@ namespace GuessTheNumber.BLL
                 return null;
             }
 
-            return new ShortGameInfoContract
+            return activeGame.OwnerId == userId ?
+                new ShortGameInfoContract
             {
                 Id = activeGame.Id,
                 OwnerUsername = activeGame.Owner.Username
+            }
+            : new MyGameContract
+            {
+                Id = activeGame.Id,
+                OwnerUsername = activeGame.Owner.Username,
+                Number = activeGame.Number
             };
         }
 
@@ -46,7 +53,25 @@ namespace GuessTheNumber.BLL
 
         public int? StartGame(int userId, int number)
         {
-            throw new NotImplementedException();
+            var activeGameCheck = this.GetActiveGame(userId);
+
+            if (activeGameCheck != null)
+            {
+                return null;
+            }
+
+            var newGame = this.gameRepository.Insert(new Game
+            {
+                Number = number,
+                EndTime = null,
+                StartTime = DateTime.Now,
+                OwnerId = userId,
+                WinnerId = null
+            });
+
+            this.gameRepository.SaveChangesAsync();
+
+            return newGame.Number;
         }
     }
 }
