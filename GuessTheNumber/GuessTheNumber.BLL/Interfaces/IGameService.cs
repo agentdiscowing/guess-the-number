@@ -15,7 +15,7 @@ namespace GuessTheNumber.BLL.Interfaces
         bool EndGame(int userId, int? winnerId = null);
 
         // return -1 if number if less than was set, 0 if it is right, 1 if it's more than was set
-        int MakeAttempt(int userId, int number);
+        GameAttemptResults MakeAttempt(int userId, int number);
 
         // check if there is a game going on rn
         ShortGameInfoContract GetActiveGame(int userId);
