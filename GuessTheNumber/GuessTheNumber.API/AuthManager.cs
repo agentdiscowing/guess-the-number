@@ -4,6 +4,7 @@
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
+    using GuessTheNumber.BLL.Contracts;
     using Microsoft.IdentityModel.Tokens;
 
     public class AuthManager : IAuthManager
@@ -15,7 +16,7 @@
             this.tokenKey = tokenKey;
         }
 
-        public string Authenticate(string email)
+        public string Authenticate(ShortUserInfoContract credentials)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(this.tokenKey);
@@ -23,7 +24,9 @@
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Email, email)
+                    new Claim(ClaimTypes.Name, credentials.Username),
+                    new Claim("id", credentials.Id.ToString()),
+                    new Claim(ClaimTypes.Email, credentials.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(3),
                 SigningCredentials = new SigningCredentials(

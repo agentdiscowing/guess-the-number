@@ -1,8 +1,11 @@
 ﻿namespace GuessTheNumber.API.Controllers
 {
+    using GuessTheNumber.API.Extensions;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -23,12 +26,12 @@
         {
             var loginedUser = this.userService.Login(creds);
 
-            if (!loginedUser)
+            if (loginedUser == null)
             {
                 return Unauthorized();
             }
 
-            var token = this.authManager.Authenticate(creds.Email);
+            var token = this.authManager.Authenticate(loginedUser);
 
             return Ok(token);
         }
@@ -43,7 +46,7 @@
                 return Conflict();
             }
 
-            var token = this.authManager.Authenticate(registeredUser.Email);
+            var token = this.authManager.Authenticate(registeredUser);
 
             return Ok(new { token, registeredUser });
         }
