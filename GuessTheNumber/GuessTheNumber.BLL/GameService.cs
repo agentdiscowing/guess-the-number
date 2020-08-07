@@ -1,14 +1,12 @@
-﻿using GuessTheNumber.BLL.Contracts;
-using GuessTheNumber.BLL.Interfaces;
-using GuessTheNumber.Core;
-using GuessTheNumber.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GuessTheNumber.BLL
+﻿namespace GuessTheNumber.BLL
 {
+    using System;
+    using System.Linq;
+    using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Core;
+    using GuessTheNumber.Core.Entities;
+
     public class GameService : IGameService
     {
         private readonly IRepository<Game> gameRepository;
@@ -18,7 +16,7 @@ namespace GuessTheNumber.BLL
             this.gameRepository = gameRepo;
         }
 
-        public ShortGameInfoContract GetActiveGame(int userId)
+        public ShortGameInfoContract GetActiveGame()
         {
             var activeGame = this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
 
@@ -27,33 +25,44 @@ namespace GuessTheNumber.BLL
                 return null;
             }
 
-            return activeGame.OwnerId == userId ?
-                new ShortGameInfoContract
+            return new ShortGameInfoContract
             {
                 Id = activeGame.Id,
                 OwnerUsername = activeGame.Owner.Username
-            }
-            : new MyGameContract
-            {
-                Id = activeGame.Id,
-                OwnerUsername = activeGame.Owner.Username,
-                Number = activeGame.Number
             };
         }
 
-        public bool EndGame(int userId, int? winnerId = null)
+        public GameAttemptResults MakeAttempt(int userId, int number)
         {
-            throw new NotImplementedException();
-        }
+            var currGame = this.GetActiveFullGame();
 
-        public int MakeAttempt(int userId, int number)
-        {
-            throw new NotImplementedException();
+            if (userId == currGame.OwnerId)
+            {
+                return GameAttemptResults.OWN;
+            }
+
+            currGame.Attempts.Add(new Attempt
+            {
+                GameId = currGame.Id,
+                Number = number,
+                UserId = userId,
+            });
+
+            this.gameRepository.SaveChangesAsync();
+
+            if (number == currGame.Number)
+            {
+                this.EndGame(userId);
+
+                return GameAttemptResults.WIN;
+            }
+
+            return number < currGame.Number ? GameAttemptResults.LESS : GameAttemptResults.MORE;
         }
 
         public int? StartGame(int userId, int number)
         {
-            var activeGameCheck = this.GetActiveGame(userId);
+            var activeGameCheck = this.GetActiveFullGame();
 
             if (activeGameCheck != null)
             {
@@ -72,6 +81,21 @@ namespace GuessTheNumber.BLL
             this.gameRepository.SaveChangesAsync();
 
             return newGame.Number;
+        }
+
+        private Game GetActiveFullGame()
+        {
+            return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
+        }
+
+        private void EndGame(int winnerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ForceEndGame(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
