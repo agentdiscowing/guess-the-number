@@ -48,7 +48,7 @@
 
             var token = this.authManager.Authenticate(registeredUser);
 
-            return Ok(new { token, registeredUser });
+            return Ok(token);
         }
     }
 }
