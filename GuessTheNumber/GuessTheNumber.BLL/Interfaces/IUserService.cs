@@ -4,7 +4,7 @@
 
     public interface IUserService
     {
-        bool Login(LoginUserContract creds);
+        ShortUserInfoContract Login(LoginUserContract creds);
 
         ShortUserInfoContract Register(NewUserContract newUser);
     }

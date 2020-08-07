@@ -16,16 +16,21 @@
             this.userRepository = userRepo;
         }
 
-        public bool Login(LoginUserContract creds)
+        public ShortUserInfoContract Login(LoginUserContract creds)
         {
             var checkUser = this.userRepository.Find(u => u.Email == creds.Email).FirstOrDefault();
 
-            if (checkUser == null)
+            if (checkUser == null || !PasswordHasher.Verify(creds.Password, checkUser.PasswordHash))
             {
-                return false;
+                return null;
             }
 
-            return PasswordHasher.Verify(creds.Password, checkUser.PasswordHash);
+            return new ShortUserInfoContract
+            {
+                Id = checkUser.Id,
+                Username = checkUser.Username,
+                Email = checkUser.Email
+            };
         }
 
         public ShortUserInfoContract Register(NewUserContract newUser)
@@ -37,7 +42,7 @@
                 return null;
             }
 
-            this.userRepository.Insert(new User
+            var insertedUser = this.userRepository.Insert(new User
             {
                 Username = newUser.Username,
                 Email = newUser.Email,
@@ -48,8 +53,9 @@
 
             return new ShortUserInfoContract
             {
-                Email = newUser.Email,
-                Username = newUser.Username
+                Id = insertedUser.Id,
+                Username = insertedUser.Username,
+                Email = insertedUser.Email
             };
         }
     }
