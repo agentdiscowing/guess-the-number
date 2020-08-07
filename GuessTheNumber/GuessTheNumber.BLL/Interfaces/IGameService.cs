@@ -18,6 +18,6 @@ namespace GuessTheNumber.BLL.Interfaces
         int MakeAttempt(int userId, int number);
 
         // check if there is a game going on rn
-        ShortGameInfoContract GetActiveGame();
+        ShortGameInfoContract GetActiveGame(int userId);
     }
 }
