@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GuessTheNumber.BLL.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,6 +18,6 @@ namespace GuessTheNumber.BLL.Interfaces
         int MakeAttempt(int userId, int number);
 
         // check if there is a game going on rn
-        bool CheckActiveGame();
+        ShortGameInfoContract GetActiveGame();
     }
 }
