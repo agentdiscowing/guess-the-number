@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.API
+﻿namespace GuessTheNumber.Web
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;

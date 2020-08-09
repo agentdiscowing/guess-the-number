@@ -1,8 +1,9 @@
-namespace GuessTheNumber.API
+namespace GuessTheNumber.Web
 {
     using System.Text;
     using GuessTheNumber.BLL;
     using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,7 +67,6 @@ namespace GuessTheNumber.API
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
-            services.AddRepository<User, GameContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

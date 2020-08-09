@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.API.Extensions
+﻿namespace GuessTheNumber.Web.Extensions
 {
     using Microsoft.AspNetCore.Http;
 

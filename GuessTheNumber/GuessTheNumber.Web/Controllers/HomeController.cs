@@ -1,6 +1,6 @@
-﻿namespace GuessTheNumber.API.Controllers
+﻿namespace GuessTheNumber.Web.Controllers
 {
-    using GuessTheNumber.API.Extensions;
+    using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
     using Microsoft.AspNetCore.Authorization;

@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.API", "GuessTheNumber.API\GuessTheNumber.API.csproj", "{4240F556-4F10-4B83-9EC5-1D73A9784F73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.Web", "GuessTheNumber.API\GuessTheNumber.Web.csproj", "{4240F556-4F10-4B83-9EC5-1D73A9784F73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.DAL", "GuessTheNumber.DAL\GuessTheNumber.DAL.csproj", "{8376EC91-E0C8-4D10-9083-18896604A65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.DAL", "GuessTheNumber.DAL\GuessTheNumber.DAL.csproj", "{8376EC91-E0C8-4D10-9083-18896604A65D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.BLL", "GuessTheNumber.BLL\GuessTheNumber.BLL.csproj", "{87AF4EDD-552A-4DCD-94A3-14C1913273CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.BLL", "GuessTheNumber.BLL\GuessTheNumber.BLL.csproj", "{87AF4EDD-552A-4DCD-94A3-14C1913273CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Tests", "GuessTheNumber.Tests\GuessTheNumber.Tests.csproj", "{A203C032-7F90-424E-B81F-D909E977F75B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.Tests", "GuessTheNumber.Tests\GuessTheNumber.Tests.csproj", "{A203C032-7F90-424E-B81F-D909E977F75B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Core", "GuessTheNumber.Core\GuessTheNumber.Core.csproj", "{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.Core", "GuessTheNumber.Core\GuessTheNumber.Core.csproj", "{B7591516-C7B2-41FF-9E90-2FBBFAE266AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber.Utils", "GuessTheNumber.Utils\GuessTheNumber.Utils.csproj", "{C3A3B10E-7E7C-4E84-9152-93B4FA380547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber.Utils", "GuessTheNumber.Utils\GuessTheNumber.Utils.csproj", "{C3A3B10E-7E7C-4E84-9152-93B4FA380547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

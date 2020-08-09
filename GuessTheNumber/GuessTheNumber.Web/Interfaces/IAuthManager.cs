@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.API
+﻿namespace GuessTheNumber.Web
 {
     using GuessTheNumber.BLL.Contracts;
 
