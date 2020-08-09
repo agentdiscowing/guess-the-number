@@ -67,6 +67,8 @@ namespace GuessTheNumber.Web
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
+
+            services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
