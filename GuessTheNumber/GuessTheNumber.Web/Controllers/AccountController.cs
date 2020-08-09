@@ -1,21 +1,18 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
-    using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly IAuthManager authManager;
 
         private readonly IUserService userService;
 
-        public HomeController(IAuthManager authenticationManager, IUserService userService)
+        public AccountController(IAuthManager authenticationManager, IUserService userService)
         {
             this.authManager = authenticationManager;
             this.userService = userService;
