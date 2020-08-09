@@ -1,8 +1,6 @@
 namespace GuessTheNumber.Web
 {
     using System.Text;
-    using GuessTheNumber.BLL;
-    using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
@@ -60,15 +58,14 @@ namespace GuessTheNumber.Web
                 };
             });
 
-            services.AddSingleton<IAuthManager>(new AuthManager(tokenKey));
-            services.AddScoped(typeof(IUserService), typeof(UserService));
-
             var connectionString = this.Configuration.GetValue<string>("ConnectionString");
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
 
             services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
