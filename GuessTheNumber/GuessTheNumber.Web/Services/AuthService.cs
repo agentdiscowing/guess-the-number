@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.Web
+﻿namespace GuessTheNumber.Web.Services
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;
@@ -7,6 +7,7 @@
     using System.Text;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.Core;
+    using GuessTheNumber.Core.Exceptions;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.Utils;
     using Microsoft.IdentityModel.Tokens;
@@ -26,10 +27,14 @@
         {
             var checkUser = this.userRepository.Find(u => u.Email == creds.Email).FirstOrDefault();
 
-            if (checkUser == null || !PasswordHasher.Verify(creds.Password, checkUser.PasswordHash))
+            if (checkUser == null)
             {
-                // insted of nulls there will be exceptions
-                return null;
+                throw new GuessTheNumberUserDoesNotExistException();
+            }
+
+            if (!PasswordHasher.Verify(creds.Password, checkUser.PasswordHash))
+            {
+                throw new GuessTheNumberInvalidPasswordException();
             }
 
             return this.Authenticate(new ShortUserInfoContract
@@ -46,7 +51,12 @@
 
             if (checkUnique != null)
             {
-                return null;
+                if (checkUnique.Email == newUser.Email)
+                {
+                    throw new GuessTheNumberEmailAlreadyExistsException();
+                }
+
+                throw new GuessTheNumberUsernameAlreadyExistsException();
             }
 
             var insertedUser = this.userRepository.Insert(new User
