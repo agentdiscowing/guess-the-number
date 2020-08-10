@@ -1,10 +1,12 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
     using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.Web.Filters;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]
+    [ExceptionFilter]
     public class AccountController : ControllerBase
     {
         private readonly IAuthService authService;
