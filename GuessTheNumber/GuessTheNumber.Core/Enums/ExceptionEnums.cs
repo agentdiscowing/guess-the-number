@@ -9,11 +9,11 @@
 
         public enum Authentication
         {
-            EmailAlreadyExists = 1101,
-            UsernameAlreadyExists = 1102,
-            InvalidPassword = 1103,
-            UserDoesNotExist = 1104,
-            UserWasNotCreated = 1105
+            EmailAlreadyExists = 409,
+            UsernameAlreadyExists = 409,
+            InvalidPassword = 403,
+            UserDoesNotExist = 404,
+            UserWasNotCreated = 404
         }
     }
 }
