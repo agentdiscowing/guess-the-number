@@ -7,5 +7,7 @@
         public static string GuessTheNumberEmailAlreadyExistsException { get; private set; } = "User with this email is already registered on the app";
 
         public static string GuessTheNumberUserDoesNotExistException { get; private set; } = "User with this username or email is not registered on the app.";
+
+        public static string GuessTheNumberInvalidPasswordException { get; private set; } = "Invalid password was entered";
     }
 }
