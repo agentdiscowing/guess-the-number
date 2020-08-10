@@ -12,7 +12,7 @@
             EmailAlreadyExists = 1101,
             UsernameAlreadyExists = 1102,
             InvalidPassword = 1103,
-            UserDoesNottExist = 1104,
+            UserDoesNotExist = 1104,
             UserWasNotCreated = 1105
         }
     }
