@@ -45,6 +45,7 @@ namespace GuessTheNumber.Web
                 {
                     options.EnableEndpointRouting = false;
                     options.Filters.Add<ExceptionFilter>();
+                    options.Filters.Add<ValidationFilter>();
                 });
 
             var tokenKey = this.Configuration.GetValue<string>("TokenKey");
