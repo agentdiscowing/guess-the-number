@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GuessTheNumber.Web.Models.Request
+﻿namespace GuessTheNumber.Web.Models.Request
 {
-    public class NewUserModel
+    using System.ComponentModel.DataAnnotations;
+
+    public class NewUserRequest
     {
         [Required]
         [StringLength(60, MinimumLength = 5, ErrorMessage = "Username must contain from 6 to 60 characters")]

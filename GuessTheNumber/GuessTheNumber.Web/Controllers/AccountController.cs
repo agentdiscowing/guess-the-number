@@ -16,7 +16,7 @@
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginUserModel creds)
+        public IActionResult Login([FromBody] LoginUserRequest creds)
         {
             string token = this.authService.Login(creds.Email, creds.Password);
 
@@ -24,7 +24,7 @@
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] NewUserModel newUser)
+        public IActionResult Register([FromBody] NewUserRequest newUser)
         {
             // will add auto mapper later
             string token = this.authService.Register(new NewUserContract

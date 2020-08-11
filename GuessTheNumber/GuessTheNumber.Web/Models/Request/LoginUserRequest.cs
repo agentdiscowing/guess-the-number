@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class LoginUserModel
+    public class LoginUserRequest
     {
         [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "Entered email is invalid")]
