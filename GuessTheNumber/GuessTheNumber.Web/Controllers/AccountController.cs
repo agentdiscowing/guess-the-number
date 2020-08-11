@@ -1,6 +1,7 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
     using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -15,17 +16,23 @@
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginUserContract creds)
+        public IActionResult Login([FromBody] LoginUserModel creds)
         {
-            string token = this.authService.Login(creds);
+            string token = this.authService.Login(creds.Email, creds.Password);
 
             return Ok(token);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] NewUserContract newUser)
+        public IActionResult Register([FromBody] NewUserModel newUser)
         {
-            string token = this.authService.Register(newUser);
+            // will add auto mapper later
+            string token = this.authService.Register(new NewUserContract
+            {
+                Email = newUser.Email,
+                Password = newUser.Password,
+                Username = newUser.Username
+            });
 
             return Ok(token);
         }
