@@ -6,6 +6,7 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.DAL;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
+    using GuessTheNumber.Web.Settings;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -53,8 +54,10 @@ namespace GuessTheNumber.Web
                     options.Filters.Add<ValidationFilter>();
                 });
 
-            var tokenKey = this.Configuration.GetValue<string>("TokenKey");
-            var key = Encoding.ASCII.GetBytes(tokenKey);
+            var jwtSettings = new JwtSettings();
+            this.Configuration.Bind(nameof(jwtSettings), jwtSettings);
+
+            services.AddSingleton(jwtSettings);
 
             services.AddAuthentication(x =>
             {
@@ -68,7 +71,7 @@ namespace GuessTheNumber.Web
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.TokenKey)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
