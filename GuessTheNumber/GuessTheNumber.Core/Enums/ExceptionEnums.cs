@@ -11,9 +11,11 @@
         {
             EmailAlreadyExists = 409,
             UsernameAlreadyExists = 409,
-            InvalidPassword = 403,
+            InvalidPassword = 401,
             UserDoesNotExist = 404,
-            UserWasNotCreated = 404
+            UserWasNotCreated = 404,
+            NoActiveGame = 404,
+            OwnerAttempt = 403
         }
     }
 }
