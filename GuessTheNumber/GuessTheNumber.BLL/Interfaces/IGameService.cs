@@ -1,15 +1,20 @@
 ﻿namespace GuessTheNumber.BLL.Interfaces
 {
     using GuessTheNumber.BLL.Contracts;
+    using System.Collections.Generic;
 
     public interface IGameService
     {
-        int? StartGame(int userId, int number);
+        // return the number of the game, stops the active game if there is one
+        int StartGame(int userId, int number);
 
+        // return one of possible results, owner of the game cannot make an attempt
         GameAttemptResults MakeAttempt(int userId, int number);
 
-        ShortGameInfoContract GetActiveGame();
+        // checks if there is an active game
+        bool IsActiveGame();
 
-        bool ForceEndGame(int userId);
+        //ends game, if game is force-ended null is passed as winner id
+        void EndGame(int? winnerId);
     }
 }

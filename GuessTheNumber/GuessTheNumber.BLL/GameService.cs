@@ -2,10 +2,10 @@
 {
     using System;
     using System.Linq;
-    using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
+    using GuessTheNumber.Core.Exceptions;
 
     public class GameService : IGameService
     {
@@ -16,29 +16,23 @@
             this.gameRepository = gameRepo;
         }
 
-        public ShortGameInfoContract GetActiveGame()
+        public bool IsActiveGame()
         {
-            var activeGame = this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
-
-            if (activeGame == null)
-            {
-                return null;
-            }
-
-            return new ShortGameInfoContract
-            {
-                Id = activeGame.Id,
-                OwnerUsername = activeGame.Owner.Username
-            };
+            return this.GetActiveGame() != null;
         }
 
         public GameAttemptResults MakeAttempt(int userId, int number)
         {
-            var currGame = this.GetActiveFullGame();
+            var currGame = this.GetActiveGame();
+
+            if (currGame == null)
+            {
+                throw new GuessTheNumberNoActiveGameException();
+            }
 
             if (userId == currGame.OwnerId)
             {
-                return GameAttemptResults.OWN;
+                throw new GuessTheNumberOwnerAttemptException();
             }
 
             currGame.Attempts.Add(new Attempt
@@ -50,23 +44,23 @@
 
             this.gameRepository.SaveChangesAsync();
 
-            if (number == currGame.Number)
+            switch (number.CompareTo(currGame.Number))
             {
-                this.EndGame(userId);
-
-                return GameAttemptResults.WIN;
+                case 0:
+                    this.EndGame(userId);
+                    return GameAttemptResults.WIN;
+                case 1:
+                    return GameAttemptResults.MORE;
+                default:
+                    return GameAttemptResults.LESS;
             }
-
-            return number < currGame.Number ? GameAttemptResults.LESS : GameAttemptResults.MORE;
         }
 
-        public int? StartGame(int userId, int number)
+        public int StartGame(int userId, int number)
         {
-            var activeGameCheck = this.GetActiveFullGame();
-
-            if (activeGameCheck != null)
+            if (this.IsActiveGame())
             {
-                return null;
+                this.EndGame(null);
             }
 
             var newGame = this.gameRepository.Insert(new Game
@@ -83,34 +77,20 @@
             return newGame.Number;
         }
 
-        public bool ForceEndGame(int userId)
+        public void EndGame(int? winnerId)
         {
-            var currGame = this.GetActiveFullGame();
-
-            if (currGame.OwnerId == userId)
-            {
-                currGame.EndTime = DateTime.Now;
-                this.gameRepository.SaveChangesAsync();
-                return true;
-            }
-
-            return false;
-        }
-
-        private Game GetActiveFullGame()
-        {
-            return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
-        }
-
-        private void EndGame(int winnerId)
-        {
-            var currGame = this.GetActiveFullGame();
+            var currGame = this.GetActiveGame();
 
             currGame.EndTime = DateTime.Now;
 
             currGame.WinnerId = winnerId;
 
             this.gameRepository.SaveChangesAsync();
+        }
+
+        private Game GetActiveGame()
+        {
+            return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
         }
     }
 }
