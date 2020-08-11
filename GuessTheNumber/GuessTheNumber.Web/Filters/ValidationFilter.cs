@@ -16,13 +16,13 @@
                     .Where(x => x.Value.Errors.Count > 0)
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(x => x.ErrorMessage)).ToArray();
 
-                var validationResponse = new ValidationResponse();
+                var validationResponse = new ApiValidationError();
 
                 foreach (var error in errorsInModelState)
                 {
                     foreach (var subError in error.Value)
                     {
-                        validationResponse.ValidationErrors.Add(new ValidationError
+                        validationResponse.ValidationErrors.Add(new ValidationResult
                         {
                             Field = error.Key,
                             Message = subError
