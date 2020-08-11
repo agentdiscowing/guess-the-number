@@ -1,6 +1,6 @@
 namespace GuessTheNumber.Web
 {
-    using System.Collections.Generic;
+    using System;
     using System.Text;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
@@ -17,8 +17,8 @@ namespace GuessTheNumber.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
-    using Microsoft.OpenApi.Models;
 
     public class Startup
     {
@@ -40,8 +40,7 @@ namespace GuessTheNumber.Web
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services
-                .AddMvc(options =>
+            services.AddMvc(options =>
                 {
                     options.EnableEndpointRouting = false;
                     options.Filters.Add<ExceptionFilter>();
@@ -79,29 +78,36 @@ namespace GuessTheNumber.Web
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
+            try
             {
-                app.UseDeveloperExceptionPage();
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseHttpsRedirection();
+
+                app.UseRouting();
+
+                app.UseAuthentication();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            catch (Exception ex)
             {
-                endpoints.MapControllers();
-            });
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
+                logger.LogError(ex.Message);
+            }
         }
     }
 }
