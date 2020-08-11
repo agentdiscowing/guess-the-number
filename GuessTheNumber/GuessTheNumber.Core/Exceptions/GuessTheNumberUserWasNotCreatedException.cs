@@ -8,7 +8,7 @@
     public class GuessTheNumberUserWasNotCreatedException : GuessTheNumberException
     {
         public GuessTheNumberUserWasNotCreatedException()
-        : base(ExceptionMessages.GuessTheNumberUserWasNotCreatedException)
+        : base(ErrorMessages.GuessTheNumberUserWasNotCreatedException)
         {
         }
 

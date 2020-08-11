@@ -8,7 +8,7 @@
     public class GuessTheNumberUserDoesNotExistException : GuessTheNumberException
     {
         public GuessTheNumberUserDoesNotExistException()
-        : base(ExceptionMessages.GuessTheNumberUserDoesNotExistException)
+        : base(ErrorMessages.GuessTheNumberUserDoesNotExistException)
         {
         }
 

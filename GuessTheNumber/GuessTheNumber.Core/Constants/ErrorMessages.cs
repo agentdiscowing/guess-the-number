@@ -1,8 +1,12 @@
 ﻿namespace GuessTheNumber.Core.Constants
 {
-    public static class ExceptionMessages
+    public static class ErrorMessages
     {
-        public static string GuessTheNumberException { get; private set; } = "Application logic failed. See the inner exception for more details.";
+        public static string ValidationError { get; private set; } = "One or more validation errors occured";
+
+        public static string UnhandledException { get; private set; } = "Sorry, something went wrong on the server side. Try again later";
+
+        public static string GuessTheNumberException { get; private set; } = "Application logic failed.";
 
         public static string GuessTheNumberEmailAlreadyExistsException { get; private set; } = "User with this email is already registered on the app";
 

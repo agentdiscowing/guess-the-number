@@ -8,7 +8,7 @@
     public class GuessTheNumberInvalidPasswordException : GuessTheNumberException
     {
         public GuessTheNumberInvalidPasswordException()
-        : base(ExceptionMessages.GuessTheNumberInvalidPasswordException)
+        : base(ErrorMessages.GuessTheNumberInvalidPasswordException)
         {
         }
 

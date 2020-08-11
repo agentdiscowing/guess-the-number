@@ -8,7 +8,7 @@
     public class GuessTheNumberUsernameAlreadyExistsException : GuessTheNumberException
     {
         public GuessTheNumberUsernameAlreadyExistsException()
-        : base(ExceptionMessages.GuessTheNumberUsernameAlreadyExistsException)
+        : base(ErrorMessages.GuessTheNumberUsernameAlreadyExistsException)
         {
         }
 

@@ -8,7 +8,7 @@
     public class GuessTheNumberException : Exception
     {
         public GuessTheNumberException()
-        : base(ExceptionMessages.GuessTheNumberException)
+        : base(ErrorMessages.GuessTheNumberException)
         {
         }
 
