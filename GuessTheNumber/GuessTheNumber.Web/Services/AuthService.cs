@@ -23,16 +23,16 @@
             this.userRepository = userRepo;
         }
 
-        public string Login(LoginUserContract creds)
+        public string Login(string email, string password)
         {
-            var checkUser = this.userRepository.Find(u => u.Email == creds.Email).FirstOrDefault();
+            var checkUser = this.userRepository.Find(u => u.Email == email).FirstOrDefault();
 
             if (checkUser == null)
             {
                 throw new GuessTheNumberUserDoesNotExistException();
             }
 
-            if (!PasswordHasher.Verify(creds.Password, checkUser.PasswordHash))
+            if (!PasswordHasher.Verify(password, checkUser.PasswordHash))
             {
                 throw new GuessTheNumberInvalidPasswordException();
             }

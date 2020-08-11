@@ -4,7 +4,7 @@
 
     public interface IAuthService
     {
-        string Login(LoginUserContract creds);
+        string Login(string email, string password);
 
         string Register(NewUserContract newUser);
     }
