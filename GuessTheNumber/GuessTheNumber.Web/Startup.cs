@@ -4,10 +4,12 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
+    using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,13 @@ namespace GuessTheNumber.Web
                     Description = "A simple online game built on ASP.NET Core Web API"
                 });
             });
+
+            services
+                .AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add<ExceptionFilter>();
+                });
 
             var tokenKey = this.Configuration.GetValue<string>("TokenKey");
             var key = Encoding.ASCII.GetBytes(tokenKey);
