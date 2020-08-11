@@ -40,6 +40,11 @@ namespace GuessTheNumber.Web
                 });
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services
                 .AddMvc(options =>
                 {
