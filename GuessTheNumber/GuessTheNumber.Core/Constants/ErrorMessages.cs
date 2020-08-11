@@ -17,5 +17,9 @@
         public static string GuessTheNumberUsernameAlreadyExistsException { get; private set; } = "User with this email is already registered on the app";
 
         public static string GuessTheNumberUserWasNotCreatedException { get; private set; } = "User was not registrered on the app";
+
+        public static string GuessTheNumberNoActiveGameException { get; private set; } = "There is no active game right now";
+
+        public static string GuessTheNumberOwnerAttemptException { get; private set; } = "Making attempt on one's own game is not allowed";
     }
 }
