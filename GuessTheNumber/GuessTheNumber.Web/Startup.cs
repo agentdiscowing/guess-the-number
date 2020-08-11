@@ -1,13 +1,16 @@
-namespace GuessTheNumber.API
+namespace GuessTheNumber.Web
 {
     using System.Text;
-    using GuessTheNumber.BLL;
-    using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
+    using GuessTheNumber.Web.Filters;
+    using GuessTheNumber.Web.Services;
+    using GuessTheNumber.Web.Settings;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -38,8 +41,23 @@ namespace GuessTheNumber.API
                 });
             });
 
-            var tokenKey = this.Configuration.GetValue<string>("TokenKey");
-            var key = Encoding.ASCII.GetBytes(tokenKey);
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            services
+                .AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add<ExceptionFilter>();
+                    options.Filters.Add<ValidationFilter>();
+                });
+
+            var jwtSettings = new JwtSettings();
+            this.Configuration.Bind(nameof(jwtSettings), jwtSettings);
+
+            services.AddSingleton(jwtSettings);
 
             services.AddAuthentication(x =>
             {
@@ -53,20 +71,20 @@ namespace GuessTheNumber.API
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.TokenKey)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
             });
 
-            services.AddSingleton<IAuthManager>(new AuthManager(tokenKey));
-            services.AddScoped(typeof(IUserService), typeof(UserService));
-
             var connectionString = this.Configuration.GetValue<string>("ConnectionString");
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
-            services.AddRepository<User, GameContext>();
+
+            services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

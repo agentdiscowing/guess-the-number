@@ -1,11 +1,11 @@
-﻿namespace GuessTheNumber.BLL.Contracts
+﻿namespace GuessTheNumber.Web.Models.Request
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class LoginUserContract
+    public class LoginUserModel
     {
         [Required]
-        [RegularExpression(@"\w+@[A-z]+\.([A-z]){2,4}")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Entered email is invalid")]
         public string Email { get; set; }
 
         [Required]

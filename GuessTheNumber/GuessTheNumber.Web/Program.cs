@@ -1,4 +1,4 @@
-namespace GuessTheNumber.API
+namespace GuessTheNumber.Web
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
