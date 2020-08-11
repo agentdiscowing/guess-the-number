@@ -1,11 +1,12 @@
 ﻿namespace GuessTheNumber.Web
 {
     using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.Web.Models.Response;
 
     public interface IAuthService
     {
-        string Login(string email, string password);
+        AuthSuccessResponse Login(string email, string password);
 
-        string Register(NewUserContract newUser);
+        AuthSuccessResponse Register(NewUserContract newUser);
     }
 }
