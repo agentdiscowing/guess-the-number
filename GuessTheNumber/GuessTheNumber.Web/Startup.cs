@@ -1,9 +1,11 @@
 namespace GuessTheNumber.Web
 {
+    using System.Collections.Generic;
     using System.Text;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
+    using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
     using GuessTheNumber.Web.Settings;
@@ -31,15 +33,7 @@ namespace GuessTheNumber.Web
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "GuessTheNumber API",
-                    Version = "v1",
-                    Description = "A simple online game built on ASP.NET Core Web API"
-                });
-            });
+            services.AddSwagger();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -81,9 +75,7 @@ namespace GuessTheNumber.Web
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
-
             services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
-
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
         }
 
