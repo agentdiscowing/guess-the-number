@@ -1,6 +1,7 @@
 ﻿namespace GuessTheNumber.Web.Filters
 {
     using System.Net;
+    using GuessTheNumber.Core.Constants;
     using GuessTheNumber.Core.Exceptions;
     using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@
         {
             var exception = context.Exception;
 
-            var apiError = new ApiError(HttpStatusCode.InternalServerError, "Something went wrong on the server-side");
+            var apiError = new ApiError(HttpStatusCode.InternalServerError, ErrorMessages.UnhandledException);
 
             if (exception is GuessTheNumberException ex)
             {
