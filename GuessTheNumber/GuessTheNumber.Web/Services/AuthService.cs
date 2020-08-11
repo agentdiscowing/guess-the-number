@@ -11,16 +11,18 @@
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.Utils;
     using Microsoft.IdentityModel.Tokens;
+    using GuessTheNumber.Web.Settings;
 
     public class AuthService : IAuthService
     {
-        private readonly string tokenKey;
+        private readonly JwtSettings jwtSettings;
 
         private readonly IRepository<User> userRepository;
 
-        public AuthService(IRepository<User> userRepo)
+        public AuthService(IRepository<User> userRepo, JwtSettings jwtSettings)
         {
             this.userRepository = userRepo;
+            this.jwtSettings = jwtSettings;
         }
 
         public string Login(string email, string password)
@@ -79,7 +81,6 @@
         private string Authenticate(ShortUserInfoContract credentials)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.tokenKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -88,9 +89,9 @@
                     new Claim("id", credentials.Id.ToString()),
                     new Claim(ClaimTypes.Email, credentials.Email)
                 }),
-                Expires = DateTime.UtcNow.AddHours(3),
+                Expires = DateTime.UtcNow.Add(this.jwtSettings.TokenLifetime),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.jwtSettings.TokenKey)),
                     SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
