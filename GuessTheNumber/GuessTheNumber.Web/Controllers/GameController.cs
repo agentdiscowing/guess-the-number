@@ -2,6 +2,8 @@
 {
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Web.Extensions;
+    using GuessTheNumber.Web.Extensions.ConvertingExtensions;
+    using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
@@ -29,9 +31,7 @@
         public IActionResult GuessTheNumber(int number)
         {
             var guessResult = this.gameService.MakeAttempt(this.HttpContext.GetUserId().Value, number);
-            // do response insted of just message
-            string message = guessResult == GameAttemptResults.WIN ? "You guessed the number correctly. Game is over." : $"Your number is {guessResult} than needed.";
-            return Ok(message);
+            return Ok(guessResult.ToResponse());
         }
 
         [HttpPost("check")]
