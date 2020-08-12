@@ -16,7 +16,7 @@
             this.gameRepository = gameRepo;
         }
 
-        public bool IsActiveGame()
+        public bool GameIsStarted()
         {
             return this.GetActiveGame() != null;
         }
@@ -58,9 +58,9 @@
 
         public int StartGame(int userId, int number)
         {
-            if (this.IsActiveGame())
+            if (this.GameIsStarted())
             {
-                this.EndGame(null);
+                this.EndGame();
             }
 
             var newGame = this.gameRepository.Insert(new Game
@@ -77,7 +77,7 @@
             return newGame.Number;
         }
 
-        public void EndGame(int? winnerId)
+        public void EndGame(int? winnerId = null)
         {
             var currGame = this.GetActiveGame();
 
