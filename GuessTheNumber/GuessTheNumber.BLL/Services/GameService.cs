@@ -44,7 +44,7 @@
                 UserId = userId,
             });
 
-            this.gameRepository.SaveChangesAsync();
+            this.gameRepository.SaveChangesAsync().Wait();
 
             if (currGame.Number == number)
             {
@@ -74,7 +74,7 @@
                 WinnerId = null
             });
 
-            this.gameRepository.SaveChangesAsync();
+            this.gameRepository.SaveChangesAsync().Wait();
 
             return newGame.Number;
         }
