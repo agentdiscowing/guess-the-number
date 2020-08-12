@@ -2,6 +2,8 @@ namespace GuessTheNumber.Web
 {
     using System;
     using System.Text;
+    using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.BLL.Services;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
@@ -76,6 +78,8 @@ namespace GuessTheNumber.Web
                                                                  .UseLazyLoadingProxies());
             services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
+            services.AddScoped(typeof(IGameService), typeof(GameService));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
