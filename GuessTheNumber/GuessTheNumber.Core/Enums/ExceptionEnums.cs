@@ -13,7 +13,11 @@
             UsernameAlreadyExists = 409,
             InvalidPassword = 401,
             UserDoesNotExist = 404,
-            UserWasNotCreated = 404,
+            UserWasNotCreated = 404
+        }
+
+        public enum Game
+        {
             NoActiveGame = 404,
             OwnerAttempt = 403
         }

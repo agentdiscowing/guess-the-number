@@ -27,6 +27,6 @@
         {
         }
 
-        public override int Code => (int)ExceptionEnums.Authentication.OwnerAttempt;
+        public override int Code => (int)ExceptionEnums.Game.OwnerAttempt;
     }
 }

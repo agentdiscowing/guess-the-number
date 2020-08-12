@@ -27,6 +27,6 @@
         {
         }
 
-        public override int Code => (int)ExceptionEnums.Authentication.NoActiveGame;
+        public override int Code => (int)ExceptionEnums.Game.NoActiveGame;
     }
 }
