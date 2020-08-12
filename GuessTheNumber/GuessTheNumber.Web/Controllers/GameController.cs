@@ -18,14 +18,14 @@
             this.gameService = gameService;
         }
 
-        [HttpPost("start")]
+        [HttpPost("start/{number}")]
         public IActionResult StartGame(int number)
         {
             int currentGameNumber = this.gameService.StartGame(this.HttpContext.GetUserId().Value, number);
             return Ok($"Game with number {currentGameNumber} is started!");
         }
 
-        [HttpPost("guess")]
+        [HttpPost("guess/{number}")]
         public IActionResult GuessTheNumber(int number)
         {
             var guessResult = this.gameService.MakeAttempt(this.HttpContext.GetUserId().Value, number);
