@@ -2,8 +2,8 @@
 {
     using System;
     using System.Runtime.Serialization;
-    using GuessTheNumber.Core.Constants;
     using GuessTheNumber.Core.Enums;
+    using GuessTheNumber.Core.Resources;
 
     public class GuessTheNumberEmailAlreadyExistsException : GuessTheNumberException
     {

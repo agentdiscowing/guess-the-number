@@ -2,7 +2,7 @@
 {
     using System;
     using System.Runtime.Serialization;
-    using GuessTheNumber.Core.Constants;
+    using GuessTheNumber.Core.Resources;
     using GuessTheNumber.Core.Enums;
 
     public class GuessTheNumberUserWasNotCreatedException : GuessTheNumberException

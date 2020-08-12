@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Net;
-    using GuessTheNumber.Core.Constants;
+    using GuessTheNumber.Core.Resources;
 
     public class ApiValidationError : ApiError
     {

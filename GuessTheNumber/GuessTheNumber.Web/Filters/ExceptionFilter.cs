@@ -1,8 +1,8 @@
 ﻿namespace GuessTheNumber.Web.Filters
 {
     using System.Net;
-    using GuessTheNumber.Core.Constants;
     using GuessTheNumber.Core.Exceptions;
+    using GuessTheNumber.Core.Resources;
     using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
