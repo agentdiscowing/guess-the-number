@@ -1,5 +1,7 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
+    using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,12 @@
     {
         private readonly IAuthService authService;
 
-        public AccountController(IAuthService authenticationService)
+        private readonly IGameService gameService;
+
+        public AccountController(IAuthService authenticationService, IGameService gameService)
         {
             this.authService = authenticationService;
+            this.gameService = gameService;
         }
 
         [HttpPost("login")]
@@ -26,10 +31,17 @@
         [HttpPost("register")]
         public IActionResult Register([FromBody] NewUserRequest newUser)
         {
-            // will add auto mapper later
             var registrationResult = this.authService.Register(newUser.ToContract());
 
             return Ok(registrationResult);
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            this.gameService.LeaveGame(this.HttpContext.GetUserId().Value);
+
+            return Ok();
         }
     }
 }
