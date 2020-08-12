@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.BLL
+﻿namespace GuessTheNumber.BLL.Services
 {
     using System;
     using System.Linq;
