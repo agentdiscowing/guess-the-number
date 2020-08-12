@@ -15,5 +15,8 @@
 
         // ends game, if game is force-ended null is passed as winner id
         void EndGame(int? winnerId);
+
+        // checks is user has active game and ends it
+        void LeaveGame(int userId);
     }
 }

@@ -95,6 +95,14 @@
             this.gameRepository.SaveChangesAsync().Wait();
         }
 
+        public void LeaveGame(int userId)
+        {
+            if (this.GetActiveGame().OwnerId == userId)
+            {
+                this.EndGame();
+            }
+        }
+
         private Game GetActiveGame()
         {
             return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
