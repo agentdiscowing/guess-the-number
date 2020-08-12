@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
@@ -22,7 +23,7 @@
             return this.GetActiveGame() != null;
         }
 
-        public GameAttemptResults MakeAttempt(int userId, int number)
+        public AttemptResultContract MakeAttempt(int userId, int number)
         {
             var currGame = this.GetActiveGame();
 
@@ -45,16 +46,16 @@
 
             this.gameRepository.SaveChangesAsync();
 
-            switch (number.CompareTo(currGame.Number))
+            if (currGame.Number == number)
             {
-                case 0:
-                    this.EndGame(userId);
-                    return GameAttemptResults.WIN;
-                case 1:
-                    return GameAttemptResults.MORE;
-                default:
-                    return GameAttemptResults.LESS;
+                this.EndGame(userId);
             }
+
+            return new AttemptResultContract
+            {
+                Number = number,
+                Result = (GameAttemptResults)number.CompareTo(currGame.Number)
+            };
         }
 
         public int StartGame(int userId, int number)
@@ -91,7 +92,7 @@
 
             currGame.WinnerId = winnerId;
 
-            this.gameRepository.SaveChangesAsync();
+            this.gameRepository.SaveChangesAsync().Wait();
         }
 
         private Game GetActiveGame()

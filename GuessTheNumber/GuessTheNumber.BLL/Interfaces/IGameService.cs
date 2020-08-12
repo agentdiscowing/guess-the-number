@@ -1,6 +1,6 @@
 ﻿namespace GuessTheNumber.BLL.Interfaces
 {
-    using static GuessTheNumber.Core.Enums.GameLogicEnums;
+    using GuessTheNumber.BLL.Contracts;
 
     public interface IGameService
     {
@@ -8,12 +8,12 @@
         int StartGame(int userId, int number);
 
         // return one of possible results, owner of the game cannot make an attempt
-        GameAttemptResults MakeAttempt(int userId, int number);
+        AttemptResultContract MakeAttempt(int userId, int number);
 
         // checks if there is an active game
         bool GameIsStarted();
 
-        //ends game, if game is force-ended null is passed as winner id
+        // ends game, if game is force-ended null is passed as winner id
         void EndGame(int? winnerId);
     }
 }
