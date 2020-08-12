@@ -81,6 +81,11 @@
         {
             var currGame = this.GetActiveGame();
 
+            if (currGame == null)
+            {
+                throw new GuessTheNumberNoActiveGameException();
+            }
+
             currGame.EndTime = DateTime.Now;
 
             currGame.WinnerId = winnerId;
