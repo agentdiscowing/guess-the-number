@@ -1,7 +1,7 @@
 ﻿namespace GuessTheNumber.Web.Extensions.ConvertingExtensions
 {
     using GuessTheNumber.BLL.Contracts;
-    using GuessTheNumber.Core.Constants;
+    using GuessTheNumber.Core.Resources;
     using GuessTheNumber.Web.Models.Response;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
