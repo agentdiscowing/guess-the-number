@@ -30,7 +30,7 @@
                     }
                 }
 
-                context.Result = new ObjectResult( new { validationResponse.Message, validationResponse.ValidationErrors})
+                context.Result = new ObjectResult(new { validationResponse.Message, validationResponse.ValidationErrors })
                 {
                     StatusCode = (int)validationResponse.StatusCode
                 };

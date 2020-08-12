@@ -2,8 +2,8 @@
 {
     using System;
     using System.Runtime.Serialization;
-    using GuessTheNumber.Core.Resources;
     using GuessTheNumber.Core.Enums;
+    using GuessTheNumber.Core.Resources;
 
     public class GuessTheNumberInvalidPasswordException : GuessTheNumberException
     {
