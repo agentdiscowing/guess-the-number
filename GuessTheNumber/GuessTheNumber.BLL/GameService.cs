@@ -6,6 +6,7 @@
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.Core.Exceptions;
+    using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public class GameService : IGameService
     {
