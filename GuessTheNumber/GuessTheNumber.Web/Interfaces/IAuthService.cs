@@ -1,6 +1,6 @@
 ﻿namespace GuessTheNumber.Web
 {
-    using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.Web.Contracts;
     using GuessTheNumber.Web.Models.Response;
 
     public interface IAuthService

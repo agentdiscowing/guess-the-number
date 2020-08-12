@@ -1,6 +1,5 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
-    using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Mvc;

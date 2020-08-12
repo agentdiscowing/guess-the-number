@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.BLL.Contracts
+﻿namespace GuessTheNumber.Web.Contracts
 {
     public class ShortUserInfoContract
     {

@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Text;
-    using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Exceptions;
     using GuessTheNumber.Core.Entities;
@@ -13,6 +12,7 @@
     using Microsoft.IdentityModel.Tokens;
     using GuessTheNumber.Web.Settings;
     using GuessTheNumber.Web.Models.Response;
+    using GuessTheNumber.Web.Contracts;
 
     public class AuthService : IAuthService
     {

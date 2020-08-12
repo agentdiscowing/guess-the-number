@@ -1,6 +1,6 @@
 ﻿namespace GuessTheNumber.Web.Extensions.ConvertingExtensions
 {
-    using GuessTheNumber.BLL.Contracts;
+    using GuessTheNumber.Web.Contracts;
     using GuessTheNumber.Web.Models.Request;
 
     public static partial class ConvertingExtensions
