@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-
-namespace GuessTheNumber.Web.Models.Response
+﻿namespace GuessTheNumber.Web.Models.Response
 {
+    using System.Net;
+
     public class ApiError
     {
         public ApiError(HttpStatusCode code, string message)

@@ -16,25 +16,25 @@
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginUserModel creds)
+        public IActionResult Login([FromBody] LoginUserRequest creds)
         {
-            string token = this.authService.Login(creds.Email, creds.Password);
+            var authResult = this.authService.Login(creds.Email, creds.Password);
 
-            return Ok(token);
+            return Ok(authResult);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] NewUserModel newUser)
+        public IActionResult Register([FromBody] NewUserRequest newUser)
         {
             // will add auto mapper later
-            string token = this.authService.Register(new NewUserContract
+            var registrationResult = this.authService.Register(new NewUserContract
             {
                 Email = newUser.Email,
                 Password = newUser.Password,
                 Username = newUser.Username
             });
 
-            return Ok(token);
+            return Ok(registrationResult);
         }
     }
 }

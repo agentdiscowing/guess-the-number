@@ -1,9 +1,11 @@
 namespace GuessTheNumber.Web
 {
+    using System;
     using System.Text;
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
+    using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
     using GuessTheNumber.Web.Settings;
@@ -15,8 +17,8 @@ namespace GuessTheNumber.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
-    using Microsoft.OpenApi.Models;
 
     public class Startup
     {
@@ -31,23 +33,14 @@ namespace GuessTheNumber.Web
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "GuessTheNumber API",
-                    Version = "v1",
-                    Description = "A simple online game built on ASP.NET Core Web API"
-                });
-            });
+            services.AddSwagger();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services
-                .AddMvc(options =>
+            services.AddMvc(options =>
                 {
                     options.EnableEndpointRouting = false;
                     options.Filters.Add<ExceptionFilter>();
@@ -81,35 +74,40 @@ namespace GuessTheNumber.Web
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
-
             services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
-
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
+            try
             {
-                app.UseDeveloperExceptionPage();
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseHttpsRedirection();
+
+                app.UseRouting();
+
+                app.UseAuthentication();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            catch (Exception ex)
             {
-                endpoints.MapControllers();
-            });
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api"));
+                logger.LogError(ex.Message);
+            }
         }
     }
 }

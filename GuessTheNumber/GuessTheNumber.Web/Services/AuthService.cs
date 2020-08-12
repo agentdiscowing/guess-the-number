@@ -12,6 +12,7 @@
     using GuessTheNumber.Utils;
     using Microsoft.IdentityModel.Tokens;
     using GuessTheNumber.Web.Settings;
+    using GuessTheNumber.Web.Models.Response;
 
     public class AuthService : IAuthService
     {
@@ -25,7 +26,7 @@
             this.jwtSettings = jwtSettings;
         }
 
-        public string Login(string email, string password)
+        public AuthSuccessResponse Login(string email, string password)
         {
             var checkUser = this.userRepository.Find(u => u.Email == email).FirstOrDefault();
 
@@ -39,15 +40,17 @@
                 throw new GuessTheNumberInvalidPasswordException();
             }
 
-            return this.Authenticate(new ShortUserInfoContract
+            var token = this.Authenticate(new ShortUserInfoContract
             {
                 Id = checkUser.Id,
                 Username = checkUser.Username,
                 Email = checkUser.Email
             });
+
+            return new AuthSuccessResponse(token);
         }
 
-        public string Register(NewUserContract newUser)
+        public AuthSuccessResponse Register(NewUserContract newUser)
         {
             var checkUnique = this.userRepository.Find(u => u.Email == newUser.Email || u.Username == newUser.Username).FirstOrDefault();
 
@@ -70,12 +73,14 @@
 
             this.userRepository.SaveChangesAsync();
 
-            return this.Authenticate(new ShortUserInfoContract
+            var token = this.Authenticate(new ShortUserInfoContract
             {
                 Id = insertedUser.Id,
                 Username = insertedUser.Username,
                 Email = insertedUser.Email
             });
+
+            return new AuthSuccessResponse(token);
         }
 
         private string Authenticate(ShortUserInfoContract credentials)
