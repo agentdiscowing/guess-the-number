@@ -79,6 +79,15 @@ namespace GuessTheNumber.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Current game is already finished.
+        /// </summary>
+        public static string GuessTheNumberGameOverException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberGameOverException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid password was entered.
         /// </summary>
         public static string GuessTheNumberInvalidPasswordException {

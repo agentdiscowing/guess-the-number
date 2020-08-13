@@ -19,7 +19,8 @@
         public enum Game
         {
             NoActiveGame = 404,
-            OwnerAttempt = 403
+            OwnerAttempt = 403,
+            GameOver = 400
         }
     }
 }

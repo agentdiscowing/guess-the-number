@@ -123,6 +123,9 @@
   <data name="GuessTheNumberException" xml:space="preserve">
     <value>Application logic failed</value>
   </data>
+  <data name="GuessTheNumberGameOverException" xml:space="preserve">
+    <value>Current game is already finished</value>
+  </data>
   <data name="GuessTheNumberInvalidPasswordException" xml:space="preserve">
     <value>Invalid password was entered</value>
   </data>
