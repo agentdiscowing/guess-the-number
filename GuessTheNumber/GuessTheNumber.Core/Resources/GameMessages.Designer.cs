@@ -61,6 +61,33 @@ namespace GuessTheNumber.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Current game is still going on.
+        /// </summary>
+        public static string GameIsActive {
+            get {
+                return ResourceManager.GetString("GameIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The game was interrupted. No one has won..
+        /// </summary>
+        public static string GameIsOver {
+            get {
+                return ResourceManager.GetString("GameIsOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The game is over. Someone guessed the number..
+        /// </summary>
+        public static string GameIsWon {
+            get {
+                return ResourceManager.GetString("GameIsWon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Your guess is correct. Game is over.
         /// </summary>
         public static string GuessIsCorrect {

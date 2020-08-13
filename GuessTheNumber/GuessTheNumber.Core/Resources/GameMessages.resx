@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GameIsActive" xml:space="preserve">
+    <value>Current game is still going on</value>
+  </data>
+  <data name="GameIsOver" xml:space="preserve">
+    <value>The game was interrupted. No one has won.</value>
+  </data>
+  <data name="GameIsWon" xml:space="preserve">
+    <value>The game is over. Someone guessed the number.</value>
+  </data>
   <data name="GuessIsCorrect" xml:space="preserve">
     <value>Your guess is correct. Game is over</value>
   </data>
