@@ -4,8 +4,8 @@
     using System.Linq;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
-    using GuessTheNumber.Core;
-    using GuessTheNumber.Core.Entities;
+    using GuessTheNumber.DAL;
+    using GuessTheNumber.DAL.Entities;
     using GuessTheNumber.Core.Exceptions;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
@@ -23,7 +23,7 @@
             return this.GetActiveGame() != null;
         }
 
-        public AttemptResultContract MakeAttempt(int userId, int number)
+        public AttemptResultContract MakeAttempt(string userId, int number)
         {
             var currGame = this.GetActiveGame();
 
@@ -58,7 +58,7 @@
             };
         }
 
-        public int StartGame(int userId, int number)
+        public int StartGame(string userId, int number)
         {
             if (this.GameIsStarted())
             {
@@ -79,7 +79,7 @@
             return newGame.Number;
         }
 
-        public void EndGame(int? winnerId = null)
+        public void EndGame(string winnerId = null)
         {
             var currGame = this.GetActiveGame();
 
@@ -95,7 +95,7 @@
             this.gameRepository.SaveChangesAsync().Wait();
         }
 
-        public void LeaveGame(int userId)
+        public void LeaveGame(string userId)
         {
             if (this.GetActiveGame().OwnerId == userId)
             {
