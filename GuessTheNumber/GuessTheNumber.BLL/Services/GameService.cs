@@ -102,10 +102,5 @@
                 this.EndGame();
             }
         }
-
-        private Game GetActiveGame()
-        {
-            return this.gameRepository.Find(g => g.EndTime == null).FirstOrDefault();
-        }
     }
 }
