@@ -1,4 +1,4 @@
-﻿namespace GuessTheNumber.Core
+﻿namespace GuessTheNumber.DAL
 {
     using System;
     using System.Linq;
