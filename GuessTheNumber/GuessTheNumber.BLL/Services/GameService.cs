@@ -2,11 +2,12 @@
 {
     using System;
     using System.Linq;
+    using Castle.Core.Internal;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Core.Exceptions;
     using GuessTheNumber.DAL;
     using GuessTheNumber.DAL.Entities;
-    using GuessTheNumber.Core.Exceptions;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public class GameService : IGameService
@@ -18,51 +19,51 @@
             this.gameRepository = gameRepo;
         }
 
-        public bool GameIsStarted()
+        public GuessResultContract MakeGuess(string userId, int number, int? currentGameId)
         {
-            return this.GetActiveGame() != null;
-        }
-
-        public GuessResultContract MakeGuess(string userId, int number)
-        {
-            var currGame = this.GetActiveGame();
-
-            if (currGame == null)
+            if (currentGameId == null)
             {
                 throw new GuessTheNumberNoActiveGameException();
             }
 
-            if (userId == currGame.OwnerId)
+            var currentGame = this.gameRepository.Find(g => g.Id == currentGameId).Single();
+
+            if (currentGame.EndTime != null)
+            {
+                throw new GuessTheNumberGameOverException();
+            }
+
+            if (userId == currentGame.OwnerId)
             {
                 throw new GuessTheNumberOwnerAttemptException();
             }
 
-            currGame.Attempts.Add(new Guess
+            currentGame.Attempts.Add(new Guess
             {
-                GameId = currGame.Id,
+                GameId = currentGame.Id,
                 Number = number,
                 UserId = userId,
             });
 
             this.gameRepository.SaveChangesAsync().Wait();
 
-            if (currGame.Number == number)
+            if (currentGame.Number == number)
             {
-                this.EndGame(userId);
+                this.EndGame(userId, currentGameId.Value);
             }
 
             return new GuessResultContract
             {
                 Number = number,
-                Result = (GameAttemptResults)number.CompareTo(currGame.Number)
+                Result = (GameAttemptResults)number.CompareTo(currentGame.Number)
             };
         }
 
-        public int StartGame(string userId, int number)
+        public int StartGame(string userId, int number, int? currentGameId)
         {
-            if (this.GameIsStarted())
+            if (currentGameId != null)
             {
-                this.EndGame();
+                this.ForceEndGame(currentGameId.Value);
             }
 
             var newGame = this.gameRepository.Insert(new Game
@@ -76,31 +77,42 @@
 
             this.gameRepository.SaveChangesAsync().Wait();
 
-            return newGame.Number;
+            return newGame.Id;
         }
 
-        public void EndGame(string winnerId = null)
+        public void LeaveGame(string userId, int? currentGameId)
         {
-            var currGame = this.GetActiveGame();
-
-            if (currGame == null)
+            if (currentGameId == null)
             {
-                throw new GuessTheNumberNoActiveGameException();
+                return;
             }
 
-            currGame.EndTime = DateTime.Now;
+            var currentGame = this.gameRepository.Find(g => g.Id == currentGameId).Single();
 
-            currGame.WinnerId = winnerId;
+            if (currentGame.OwnerId == userId)
+            {
+                this.ForceEndGame(currentGameId.Value);
+            }
+        }
+
+        private void EndGame(string winnerId, int currentGameId)
+        {
+            var currentGameEntity = this.gameRepository.Find(g => g.Id == currentGameId).Single();
+
+            currentGameEntity.EndTime = DateTime.Now;
+
+            currentGameEntity.WinnerId = winnerId;
 
             this.gameRepository.SaveChangesAsync().Wait();
         }
 
-        public void LeaveGame(string userId)
+        private void ForceEndGame(int currentGameId)
         {
-            if (this.GetActiveGame().OwnerId == userId)
-            {
-                this.EndGame();
-            }
+            var currentGameEntity = this.gameRepository.Find(g => g.Id == currentGameId).Single();
+
+            currentGameEntity.EndTime = DateTime.Now;
+
+            this.gameRepository.SaveChangesAsync().Wait();
         }
     }
 }
