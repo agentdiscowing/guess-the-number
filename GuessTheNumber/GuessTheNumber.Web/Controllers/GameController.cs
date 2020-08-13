@@ -3,10 +3,9 @@
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
-    using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -23,22 +22,16 @@
         [HttpPost("start/{number}")]
         public IActionResult StartGame(int number)
         {
-            int currentGameNumber = this.gameService.StartGame(this.HttpContext.GetUserId().Value, number);
-            return Ok($"Game with number {currentGameNumber} is started!");
+            int currentGameId = this.gameService.StartGame(this.HttpContext.GetUserId(), number, this.HttpContext.GetCurrentGameId());
+            this.HttpContext.Session.SetString("GameId", currentGameId.ToString());
+            return Ok($"Game with number {number} is started!");
         }
 
         [HttpPost("guess/{number}")]
         public IActionResult GuessTheNumber(int number)
         {
-            var guessResult = this.gameService.MakeAttempt(this.HttpContext.GetUserId().Value, number);
+            var guessResult = this.gameService.MakeGuess(this.HttpContext.GetUserId(), number, this.HttpContext.GetCurrentGameId());
             return Ok(guessResult.ToResponse());
-        }
-
-        [HttpPost("check")]
-        public IActionResult CheckActiveGame()
-        {
-            var gameIsStarted = this.gameService.GameIsStarted();
-            return Ok(gameIsStarted);
         }
     }
 }
