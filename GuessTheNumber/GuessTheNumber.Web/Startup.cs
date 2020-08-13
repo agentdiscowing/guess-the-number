@@ -36,6 +36,8 @@ namespace GuessTheNumber.Web
         {
             services.AddControllers();
 
+            services.AddSession();
+
             services.AddSwagger();
 
             services.Configure<ApiBehaviorOptions>(options =>
@@ -106,6 +108,8 @@ namespace GuessTheNumber.Web
                 app.UseHttpsRedirection();
 
                 app.UseRouting();
+
+                app.UseSession();
 
                 app.UseAuthentication();
 
