@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Castle.Core.Internal;
     using GuessTheNumber.BLL.Contracts;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Core.Exceptions;
@@ -93,6 +92,24 @@
             {
                 this.ForceEndGame(currentGameId.Value);
             }
+        }
+
+        public GameStates GetGameState(int? currentGameId)
+        {
+            if (currentGameId == null)
+            {
+                throw new GuessTheNumberNoActiveGameException();
+            }
+
+            var currentGame = this.gameRepository.Find(g => g.Id == currentGameId).Single();
+
+            GameStates state = currentGame.EndTime switch
+            {
+                null => GameStates.ACTIVE,
+                _ => currentGame.WinnerId == null ? GameStates.OVER : GameStates.WON
+            };
+
+            return state;
         }
 
         private void EndGame(string winnerId, int currentGameId)

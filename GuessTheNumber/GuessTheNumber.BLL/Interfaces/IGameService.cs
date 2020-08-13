@@ -1,6 +1,7 @@
 ﻿namespace GuessTheNumber.BLL.Interfaces
 {
     using GuessTheNumber.BLL.Contracts;
+    using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public interface IGameService
     {
@@ -13,5 +14,7 @@
         // checks is user has active game and ends it
         void LeaveGame(string userId, int? currentGameId);
 
+        // return current game state
+        GameStates GetGameState(int? currentGameId);
     }
 }
