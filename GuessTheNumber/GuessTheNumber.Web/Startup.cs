@@ -7,6 +7,7 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Core;
     using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
+    using GuessTheNumber.Web.Data;
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
@@ -14,6 +15,7 @@ namespace GuessTheNumber.Web
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -21,6 +23,7 @@ namespace GuessTheNumber.Web
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -47,7 +50,8 @@ namespace GuessTheNumber.Web
                     options.EnableEndpointRouting = false;
                     options.Filters.Add<ExceptionFilter>();
                     options.Filters.Add<ValidationFilter>();
-                });
+                }) // to supress "possible object cycle" filter
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             var jwtSettings = new JwtSettings();
             this.Configuration.Bind(nameof(jwtSettings), jwtSettings);
@@ -76,7 +80,19 @@ namespace GuessTheNumber.Web
 
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
-            services.AddScoped(typeof(IRepository<User>), typeof(Repository<User, GameContext>));
+
+            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString)
+                                                                 .UseLazyLoadingProxies());
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+                   .AddRoles<IdentityRole>()
+                   .AddEntityFrameworkStores<IdentityContext>();
+
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
