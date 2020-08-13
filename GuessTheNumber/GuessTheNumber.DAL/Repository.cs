@@ -4,8 +4,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using GuessTheNumber.Core;
-    using GuessTheNumber.Core.Entities;
+    using GuessTheNumber.DAL.Entities;
     using Microsoft.EntityFrameworkCore;
 
     public class Repository<TEntity, TContext> : IRepository<TEntity>
