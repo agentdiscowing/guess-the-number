@@ -33,5 +33,13 @@
             var guessResult = this.gameService.MakeGuess(this.HttpContext.GetUserId(), number, this.HttpContext.GetCurrentGameId());
             return Ok(guessResult.ToResponse());
         }
+
+        [HttpPost("state")]
+        public IActionResult GetState()
+        {
+            var guessResult = this.gameService.GetGameState(this.HttpContext.GetCurrentGameId());
+            return Ok(guessResult.ToResponse());
+        }
+
     }
 }
