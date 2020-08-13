@@ -2,11 +2,12 @@
 {
     using GuessTheNumber.Web.Contracts;
     using GuessTheNumber.Web.Models.Response;
+    using System.Threading.Tasks;
 
     public interface IAuthService
     {
-        AuthSuccessResponse Login(string email, string password);
+        Task<AuthSuccessResponse> LoginAsync(string email, string password);
 
-        AuthSuccessResponse Register(NewUserContract newUser);
+        Task<AuthSuccessResponse> RegisterAsync(NewUserContract newUser);
     }
 }

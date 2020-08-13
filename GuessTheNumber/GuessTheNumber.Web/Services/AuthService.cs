@@ -2,40 +2,38 @@
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;
-    using System.Linq;
     using System.Security.Claims;
     using System.Text;
-    using GuessTheNumber.Core;
-    using GuessTheNumber.Core.Entities;
+    using System.Threading.Tasks;
     using GuessTheNumber.Core.Exceptions;
-    using GuessTheNumber.Utils;
     using GuessTheNumber.Web.Contracts;
     using GuessTheNumber.Web.Models.Response;
     using GuessTheNumber.Web.Settings;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.IdentityModel.Tokens;
 
     public class AuthService : IAuthService
     {
         private readonly JwtSettings jwtSettings;
 
-        private readonly IRepository<User> userRepository;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public AuthService(IRepository<User> userRepo, JwtSettings jwtSettings)
+        public AuthService(UserManager<IdentityUser> userRepo, JwtSettings jwtSettings)
         {
-            this.userRepository = userRepo;
+            this.userManager = userRepo;
             this.jwtSettings = jwtSettings;
         }
 
-        public AuthSuccessResponse Login(string email, string password)
+        public async Task<AuthSuccessResponse> LoginAsync(string email, string password)
         {
-            var checkUser = this.userRepository.Find(u => u.Email == email).FirstOrDefault();
-
+            var checkUser = await this.userManager.FindByEmailAsync(email);
             if (checkUser == null)
             {
                 throw new GuessTheNumberUserDoesNotExistException();
             }
 
-            if (!PasswordHasher.Verify(password, checkUser.PasswordHash))
+            var passwordIsValid = await this.userManager.CheckPasswordAsync(checkUser, password);
+            if (!passwordIsValid)
             {
                 throw new GuessTheNumberInvalidPasswordException();
             }
@@ -43,41 +41,41 @@
             var token = this.Authenticate(new ShortUserInfoContract
             {
                 Id = checkUser.Id,
-                Username = checkUser.Username,
+                Username = checkUser.UserName,
                 Email = checkUser.Email
             });
 
             return new AuthSuccessResponse(token);
         }
 
-        public AuthSuccessResponse Register(NewUserContract newUser)
+        public async Task<AuthSuccessResponse> RegisterAsync(NewUserContract user)
         {
-            var checkUnique = this.userRepository.Find(u => u.Email == newUser.Email || u.Username == newUser.Username).FirstOrDefault();
+            var checkUniqueEmail = await this.userManager.FindByEmailAsync(user.Email);
 
-            if (checkUnique != null)
+            if (checkUniqueEmail != null)
             {
-                if (checkUnique.Email == newUser.Email)
-                {
-                    throw new GuessTheNumberEmailAlreadyExistsException();
-                }
-
-                throw new GuessTheNumberUsernameAlreadyExistsException();
+                throw new GuessTheNumberEmailAlreadyExistsException();
             }
 
-            var insertedUser = this.userRepository.Insert(new User
+            var newUser = new IdentityUser
             {
-                Username = newUser.Username,
-                Email = newUser.Email,
-                PasswordHash = PasswordHasher.Hash(newUser.Password)
-            });
+                UserName = user.Username,
+                Email = user.Email,
+                Id = Guid.NewGuid().ToString()
+            };
 
-            this.userRepository.SaveChangesAsync();
+            var createdUser = await this.userManager.CreateAsync(newUser, user.Password);
+
+            if (!createdUser.Succeeded)
+            {
+                throw new GuessTheNumberUserWasNotCreatedException();
+            }
 
             var token = this.Authenticate(new ShortUserInfoContract
             {
-                Id = insertedUser.Id,
-                Username = insertedUser.Username,
-                Email = insertedUser.Email
+                Id = newUser.Id,
+                Username = newUser.UserName,
+                Email = newUser.Email
             });
 
             return new AuthSuccessResponse(token);
@@ -91,7 +89,7 @@
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, credentials.Username),
-                    new Claim("id", credentials.Id.ToString()),
+                    new Claim("id", credentials.Id),
                     new Claim(ClaimTypes.Email, credentials.Email)
                 }),
                 Expires = DateTime.UtcNow.Add(this.jwtSettings.TokenLifetime),
