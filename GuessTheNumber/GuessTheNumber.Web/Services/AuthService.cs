@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using GuessTheNumber.Core.Exceptions;
     using GuessTheNumber.Web.Contracts;
-    using GuessTheNumber.Web.Models.Response;
     using GuessTheNumber.Web.Settings;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.IdentityModel.Tokens;
@@ -24,7 +23,7 @@
             this.jwtSettings = jwtSettings;
         }
 
-        public async Task<AuthSuccessResponse> LoginAsync(string email, string password)
+        public async Task<string> LoginAsync(string email, string password)
         {
             var checkUser = await this.userManager.FindByEmailAsync(email);
             if (checkUser == null)
@@ -45,10 +44,10 @@
                 Email = checkUser.Email
             });
 
-            return new AuthSuccessResponse(token);
+            return token;
         }
 
-        public async Task<AuthSuccessResponse> RegisterAsync(NewUserContract user)
+        public async Task<string> RegisterAsync(NewUserContract user)
         {
             var checkUniqueEmail = await this.userManager.FindByEmailAsync(user.Email);
 
@@ -78,7 +77,7 @@
                 Email = newUser.Email
             });
 
-            return new AuthSuccessResponse(token);
+            return token;
         }
 
         private string Authenticate(ShortUserInfoContract credentials)

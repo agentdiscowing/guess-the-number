@@ -4,6 +4,7 @@
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Models.Request;
+    using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -23,23 +24,23 @@
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginUserRequest creds)
         {
-            var authResult = this.authService.Login(creds.Email, creds.Password);
+            var token = this.authService.LoginAsync(creds.Email, creds.Password);
 
-            return Ok(authResult);
+            return Ok(new AuthSuccessResponse(token.Result));
         }
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] NewUserRequest newUser)
         {
-            var registrationResult = this.authService.Register(newUser.ToContract());
+            var token = this.authService.RegisterAsync(newUser.ToContract());
 
-            return Ok(registrationResult);
+            return Ok(new AuthSuccessResponse(token.Result));
         }
 
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            this.gameService.LeaveGame(this.HttpContext.GetUserId().Value);
+            this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.HttpContext.GetCurrentGameId());
 
             return Ok();
         }
