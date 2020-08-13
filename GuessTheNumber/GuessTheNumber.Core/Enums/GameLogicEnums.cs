@@ -8,5 +8,12 @@
             MORE = 1,
             WIN = 0
         }
+
+        public enum GameStates
+        {
+            ACTIVE,
+            WON,
+            OVER
+        }
     }
 }
