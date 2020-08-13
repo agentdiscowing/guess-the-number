@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GuessTheNumber.DAL.Entities
 {
-    public class Attempt
+    public class Guess
     {
         public string UserId { get; set; }
 

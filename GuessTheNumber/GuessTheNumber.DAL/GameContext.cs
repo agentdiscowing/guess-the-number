@@ -17,7 +17,9 @@
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Attempt>().HasKey(q =>
+            modelBuilder.Entity<Guess>().ToTable("Guesses");
+
+            modelBuilder.Entity<Guess>().HasKey(q =>
             new
             {
                 q.GameId,
@@ -29,9 +31,9 @@
 
             modelBuilder.Entity<Game>().HasOne(g => g.Winner).WithMany().HasForeignKey(g => g.WinnerId);
 
-            modelBuilder.Entity<Attempt>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<Guess>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
 
-            modelBuilder.Entity<Attempt>().HasOne(a => a.Game).WithMany(g => g.Attempts).HasForeignKey(a => a.GameId);
+            modelBuilder.Entity<Guess>().HasOne(a => a.Game).WithMany(g => g.Attempts).HasForeignKey(a => a.GameId);
         }
     }
 }

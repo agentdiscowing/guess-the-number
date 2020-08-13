@@ -7,7 +7,7 @@
 
     public static partial class ConvertingExtensions
     {
-        public static GuessResponse ToResponse(this AttemptResultContract attemptContract)
+        public static GuessResponse ToResponse(this GuessResultContract attemptContract)
         {
             string message = attemptContract.Result switch
             {

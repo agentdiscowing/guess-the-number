@@ -20,6 +20,6 @@
 
         public virtual IdentityUser Owner { get; set; }
 
-        public virtual ICollection<Attempt> Attempts { get; set; }
+        public virtual ICollection<Guess> Attempts { get; set; }
     }
 }

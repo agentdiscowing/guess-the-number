@@ -23,7 +23,7 @@
             return this.GetActiveGame() != null;
         }
 
-        public AttemptResultContract MakeAttempt(string userId, int number)
+        public GuessResultContract MakeGuess(string userId, int number)
         {
             var currGame = this.GetActiveGame();
 
@@ -37,7 +37,7 @@
                 throw new GuessTheNumberOwnerAttemptException();
             }
 
-            currGame.Attempts.Add(new Attempt
+            currGame.Attempts.Add(new Guess
             {
                 GameId = currGame.Id,
                 Number = number,
@@ -51,7 +51,7 @@
                 this.EndGame(userId);
             }
 
-            return new AttemptResultContract
+            return new GuessResultContract
             {
                 Number = number,
                 Result = (GameAttemptResults)number.CompareTo(currGame.Number)

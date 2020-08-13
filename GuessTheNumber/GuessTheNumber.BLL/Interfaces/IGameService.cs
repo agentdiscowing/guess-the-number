@@ -8,7 +8,7 @@
         int StartGame(string userId, int number);
 
         // return one of possible results, owner of the game cannot make an attempt
-        AttemptResultContract MakeAttempt(string userId, int number);
+        GuessResultContract MakeGuess(string userId, int number);
 
         // checks if there is an active game
         bool GameIsStarted();
