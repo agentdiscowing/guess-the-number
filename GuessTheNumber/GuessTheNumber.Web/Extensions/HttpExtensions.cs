@@ -4,14 +4,14 @@
 
     public static class HttpExtensions
     {
-        public static int? GetUserId(this HttpContext httpContext)
+        public static string GetUserId(this HttpContext httpContext)
         {
             if (httpContext.User == null)
             {
                 return null;
             }
 
-            return int.Parse(httpContext.User.FindFirst("id").Value);
+            return httpContext.User.FindFirst("id").Value;
         }
     }
 }
