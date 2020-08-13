@@ -4,10 +4,8 @@ namespace GuessTheNumber.Web
     using System.Text;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.BLL.Services;
-    using GuessTheNumber.Core;
-    using GuessTheNumber.Core.Entities;
     using GuessTheNumber.DAL;
-    using GuessTheNumber.Web.Data;
+    using GuessTheNumber.DAL.Entities;
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
@@ -81,8 +79,6 @@ namespace GuessTheNumber.Web
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
 
-            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString)
-                                                                 .UseLazyLoadingProxies());
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -91,7 +87,7 @@ namespace GuessTheNumber.Web
                 options.Password.RequireNonAlphanumeric = false;
             })
                    .AddRoles<IdentityRole>()
-                   .AddEntityFrameworkStores<IdentityContext>();
+                   .AddEntityFrameworkStores<GameContext>();
 
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
