@@ -41,5 +41,13 @@
             return Ok(guessResult.ToResponse());
         }
 
+        // implemented pagination here
+        [HttpGet("history/{page}")]
+        public IActionResult GetGameHistory(int page, [FromBody] int gamesPerPage)
+        {
+            var gameList = this.gameService.GetGameHistory(page, gamesPerPage, this.HttpContext.GetUserId());
+            return Ok(gameList);
+        }
+
     }
 }
