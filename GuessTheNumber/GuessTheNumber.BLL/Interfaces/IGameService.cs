@@ -1,6 +1,7 @@
 ﻿namespace GuessTheNumber.BLL.Interfaces
 {
     using GuessTheNumber.BLL.Contracts;
+    using System.Collections.Generic;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public interface IGameService
@@ -16,5 +17,8 @@
 
         // return current game state
         GameStates GetGameState(int? currentGameId);
+
+        // return a page of won games
+        IList<GameInfoContract> GetGameHistory(int page, int gamesPerPage, string userId);
     }
 }
