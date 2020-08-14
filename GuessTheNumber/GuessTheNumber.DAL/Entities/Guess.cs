@@ -1,8 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-
-namespace GuessTheNumber.DAL.Entities
+﻿namespace GuessTheNumber.DAL.Entities
 {
+    using Microsoft.AspNetCore.Identity;
+
     public class Guess
     {
         public string UserId { get; set; }

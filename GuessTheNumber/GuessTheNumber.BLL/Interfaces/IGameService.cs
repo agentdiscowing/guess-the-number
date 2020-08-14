@@ -1,7 +1,7 @@
 ﻿namespace GuessTheNumber.BLL.Interfaces
 {
-    using GuessTheNumber.BLL.Contracts;
     using System.Collections.Generic;
+    using GuessTheNumber.BLL.Contracts;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public interface IGameService

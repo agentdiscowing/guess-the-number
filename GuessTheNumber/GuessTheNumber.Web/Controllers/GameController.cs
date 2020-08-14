@@ -48,6 +48,5 @@
             var gameList = this.gameService.GetGameHistory(page, gamesPerPage, this.HttpContext.GetUserId());
             return Ok(gameList);
         }
-
     }
 }

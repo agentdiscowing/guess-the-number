@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace GuessTheNumber.DAL.Migrations
+﻿namespace GuessTheNumber.DAL.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class RenamedGuess : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

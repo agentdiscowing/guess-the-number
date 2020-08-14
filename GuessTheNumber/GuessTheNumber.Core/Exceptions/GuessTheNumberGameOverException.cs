@@ -1,10 +1,10 @@
-﻿using GuessTheNumber.Core.Enums;
-using GuessTheNumber.Core.Resources;
-using System;
-using System.Runtime.Serialization;
-
-namespace GuessTheNumber.Core.Exceptions
+﻿namespace GuessTheNumber.Core.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+    using GuessTheNumber.Core.Enums;
+    using GuessTheNumber.Core.Resources;
+
     public class GuessTheNumberGameOverException : GuessTheNumberException
     {
         public GuessTheNumberGameOverException()
@@ -27,6 +27,6 @@ namespace GuessTheNumber.Core.Exceptions
         {
         }
 
-        public virtual int Code => (int)ExceptionEnums.Game.GameOver;
+        public override int Code => (int)ExceptionEnums.Game.GameOver;
     }
 }

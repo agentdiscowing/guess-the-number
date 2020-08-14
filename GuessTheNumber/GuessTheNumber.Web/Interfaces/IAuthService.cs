@@ -1,7 +1,7 @@
 ﻿namespace GuessTheNumber.Web
 {
-    using GuessTheNumber.Web.Contracts;
     using System.Threading.Tasks;
+    using GuessTheNumber.Web.Contracts;
 
     public interface IAuthService
     {

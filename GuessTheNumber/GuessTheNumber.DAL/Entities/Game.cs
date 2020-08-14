@@ -1,9 +1,9 @@
 ﻿namespace GuessTheNumber.DAL.Entities
 {
-    
     using System;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Identity;
+
     public class Game : BaseEntity
     {
         public string OwnerId { get; set; }

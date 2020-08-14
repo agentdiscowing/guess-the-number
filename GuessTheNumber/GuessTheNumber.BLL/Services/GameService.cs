@@ -113,6 +113,19 @@
             return state;
         }
 
+        public IList<GameInfoContract> GetGameHistory(int page, int gamesPerPage, string userId)
+        {
+            var wonGames = this.gameRepository.Find(g => g.WinnerId != null).Skip(--page * gamesPerPage).Take(gamesPerPage).OrderBy(g => g.StartTime);
+
+            return wonGames.Select(g => new GameInfoContract
+            {
+                Length = g.EndTime.Value.Subtract(g.StartTime),
+                Number = g.Number,
+                ParticipatedByUser = g.Attempts.Any(a => a.UserId == userId),
+                WonByUser = g.WinnerId == userId
+            }).ToList();
+        }
+
         private void EndGame(string winnerId, int currentGameId)
         {
             var currentGameEntity = this.gameRepository.Find(g => g.Id == currentGameId).Single();
@@ -131,19 +144,6 @@
             currentGameEntity.EndTime = DateTime.Now;
 
             this.gameRepository.SaveChangesAsync().Wait();
-        }
-
-        public IList<GameInfoContract> GetGameHistory(int page, int gamesPerPage, string userId)
-        {
-            var wonGames = this.gameRepository.Find(g => g.WinnerId != null).Skip(--page * gamesPerPage).Take(gamesPerPage).OrderBy(g => g.StartTime);
-
-            return wonGames.Select(g => new GameInfoContract
-            {
-                Length = g.EndTime.Value.Subtract(g.StartTime),
-                Number = g.Number,
-                ParticipatedByUser = g.Attempts.Any(a => a.UserId == userId),
-                WonByUser = g.WinnerId == userId
-            }).ToList();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace GuessTheNumber.DAL.Migrations
+﻿namespace GuessTheNumber.DAL.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddedIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

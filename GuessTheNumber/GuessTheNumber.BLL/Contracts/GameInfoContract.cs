@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace GuessTheNumber.BLL.Contracts
+﻿namespace GuessTheNumber.BLL.Contracts
 {
+    using System;
+
     public class GameInfoContract
     {
         public TimeSpan Length { get; set; }
