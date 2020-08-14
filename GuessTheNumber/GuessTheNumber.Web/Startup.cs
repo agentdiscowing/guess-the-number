@@ -1,7 +1,6 @@
 namespace GuessTheNumber.Web
 {
     using System;
-    using System.Text;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.BLL.Services;
     using GuessTheNumber.DAL;
@@ -9,8 +8,6 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Services;
-    using GuessTheNumber.Web.Settings;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -20,7 +17,6 @@ namespace GuessTheNumber.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
     public class Startup
@@ -40,6 +36,8 @@ namespace GuessTheNumber.Web
 
             services.AddSwagger();
 
+            services.AddJwtTokens(this.Configuration);
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -52,29 +50,6 @@ namespace GuessTheNumber.Web
                     options.Filters.Add<ValidationFilter>();
                 }) // to supress "possible object cycle" filter
                     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-            var jwtSettings = new JwtSettings();
-            this.Configuration.Bind(nameof(jwtSettings), jwtSettings);
-
-            services.AddSingleton(jwtSettings);
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.TokenKey)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
 
             var connectionString = this.Configuration.GetValue<string>("ConnectionString");
 
