@@ -34,7 +34,7 @@
             return Ok(guessResult.ToResponse());
         }
 
-        [HttpPost("state")]
+        [HttpGet("state")]
         public IActionResult GetState()
         {
             var guessResult = this.gameService.GetGameState(this.HttpContext.GetCurrentGameId());
