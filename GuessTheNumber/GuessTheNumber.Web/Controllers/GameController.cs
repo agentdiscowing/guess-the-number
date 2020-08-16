@@ -3,6 +3,7 @@
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
+    using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@
         {
             int currentGameId = this.gameService.StartGame(this.HttpContext.GetUserId(), number, this.HttpContext.GetCurrentGameId());
             this.HttpContext.Session.SetString("GameId", currentGameId.ToString());
-            return Ok($"Game with number {number} is started!");
+            return Ok(new GameStartedResponse(number));
         }
 
         [HttpPost("guess/{number}")]
@@ -37,8 +38,8 @@
         [HttpGet("state")]
         public IActionResult GetState()
         {
-            var guessResult = this.gameService.GetGameState(this.HttpContext.GetCurrentGameId());
-            return Ok(guessResult.ToResponse());
+            var gameState = this.gameService.GetGameState(this.HttpContext.GetCurrentGameId());
+            return Ok(gameState.ToResponse());
         }
     }
 }
