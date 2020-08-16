@@ -17,6 +17,13 @@
             this.gameRepository = gameRepo;
         }
 
+        public IList<GuessContract> GetGameGuesses(int gameId)
+        {
+            var game = this.gameRepository.Find(g => g.Id == gameId).Single();
+
+            return game.Attempts.ToContractList();
+        }
+
         public IList<GameInfoContract> GetGameHistory(int page, int gamesPerPage)
         {
             var wonGames = this.gameRepository.Find(g => g.WinnerId != null)
