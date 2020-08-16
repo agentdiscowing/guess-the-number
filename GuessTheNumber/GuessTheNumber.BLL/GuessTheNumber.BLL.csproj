@@ -17,8 +17,4 @@
     <ProjectReference Include="..\GuessTheNumber.DAL\GuessTheNumber.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
 </Project>
