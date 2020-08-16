@@ -17,9 +17,16 @@
         }
 
         [HttpGet("{page}")]
-        public IActionResult Get(int page, [FromBody] int gamesPerPage)
+        public IActionResult GetGames(int page, [FromBody] int gamesPerPage)
         {
             var gameList = this.historyService.GetGameHistory(page, gamesPerPage);
+            return Ok(gameList);
+        }
+
+        [HttpGet("guesses")]
+        public IActionResult GetGameGuesses([FromBody] int gameId)
+        {
+            var gameList = this.historyService.GetGameGuesses(gameId);
             return Ok(gameList);
         }
     }
