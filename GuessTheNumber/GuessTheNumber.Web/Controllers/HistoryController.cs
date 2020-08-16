@@ -10,17 +10,17 @@
     [Authorize]
     public class HistoryController : ControllerBase
     {
-        private readonly IGameService gameService;
+        private readonly IHistoryService historyService;
 
-        public HistoryController(IGameService gameService)
+        public HistoryController(IHistoryService historyService)
         {
-            this.gameService = gameService;
+            this.historyService = historyService;
         }
 
-        [HttpGet("history/{page}")]
-        public IActionResult GetGameHistory(int page, [FromBody] int gamesPerPage)
+        [HttpGet("{page}")]
+        public IActionResult Get(int page, [FromBody] int gamesPerPage)
         {
-            var gameList = this.gameService.GetGameHistory(page, gamesPerPage, this.HttpContext.GetUserId());
+            var gameList = this.historyService.GetGameHistory(page, gamesPerPage, this.HttpContext.GetUserId());
             return Ok(gameList);
         }
     }

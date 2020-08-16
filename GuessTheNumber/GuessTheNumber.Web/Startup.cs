@@ -69,6 +69,7 @@ namespace GuessTheNumber.Web
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
+            services.AddScoped(typeof(IHistoryService), typeof(HistoryService));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
