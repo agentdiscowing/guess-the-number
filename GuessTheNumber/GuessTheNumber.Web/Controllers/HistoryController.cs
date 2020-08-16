@@ -1,7 +1,6 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
     using GuessTheNumber.BLL.Interfaces;
-    using GuessTheNumber.Web.Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,7 @@
         [HttpGet("{page}")]
         public IActionResult Get(int page, [FromBody] int gamesPerPage)
         {
-            var gameList = this.historyService.GetGameHistory(page, gamesPerPage, this.HttpContext.GetUserId());
+            var gameList = this.historyService.GetGameHistory(page, gamesPerPage);
             return Ok(gameList);
         }
     }
