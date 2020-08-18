@@ -15,8 +15,10 @@
 
             var apiError = new ApiError(HttpStatusCode.InternalServerError, ErrorMessages.UnhandledException);
 
-            if (exception is GuessTheNumberException ex)
+            if (exception is GuessTheNumberException || exception.InnerException is GuessTheNumberException)
             {
+                var ex = (GuessTheNumberException)exception.InnerException ?? (GuessTheNumberException)exception;
+
                 apiError.StatusCode = (HttpStatusCode)ex.Code;
 
                 apiError.Message = ex.Message;
