@@ -1,6 +1,8 @@
 namespace GuessTheNumber.Web
 {
     using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.BLL.Services;
     using GuessTheNumber.DAL;
@@ -10,6 +12,7 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Web.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -90,6 +93,21 @@ namespace GuessTheNumber.Web
                 app.UseAuthentication();
 
                 app.UseAuthorization();
+
+                app.Use(async (r, next) =>
+                {
+                    if (r.Request.Headers.Keys.Contains("Origin", StringComparer.OrdinalIgnoreCase) &&
+                        r.Request.Method == "OPTIONS")
+                    {
+                        r.Response.OnStarting(() =>
+                        {
+                            r.Response.StatusCode = 200;
+                            r.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type";
+                            return Task.CompletedTask;
+                        });
+                    }
+                    await next();
+                });
 
                 app.UseEndpoints(endpoints =>
                 {
