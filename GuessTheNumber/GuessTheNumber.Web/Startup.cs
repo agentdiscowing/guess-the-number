@@ -102,7 +102,7 @@ namespace GuessTheNumber.Web
                         r.Response.OnStarting(() =>
                         {
                             r.Response.StatusCode = 200;
-                            r.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type";
+                            r.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization";
                             return Task.CompletedTask;
                         });
                     }
