@@ -37,6 +37,10 @@ export class AuthService {
     );
   }
 
+  isLoggedIn(): boolean{
+    return localStorage.getItem('id_token') !== null
+  }
+  
   private setSession(authResult: AuthResult) {
     localStorage.setItem('id_token', authResult.token);
   }
