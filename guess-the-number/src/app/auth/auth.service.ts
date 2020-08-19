@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { AuthResult } from './authResult';
+import { NewUser } from './register/newUser';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,15 @@ export class AuthService {
   login(email: string, password: string) : Observable<AuthResult>{
     let url = this.authUrl + "/login";
     return this.http.post<AuthResult>(url, {email, password}, this.httpOptions).pipe(
+      tap({ next: (x) => { 
+        this.setSession(x) 
+      }})
+    );
+  }
+
+  register(newUser: NewUser) : Observable<AuthResult>{
+    let url = this.authUrl + "/register";
+    return this.http.post<AuthResult>(url, newUser, this.httpOptions).pipe(
       tap({ next: (x) => { 
         this.setSession(x) 
       }})
