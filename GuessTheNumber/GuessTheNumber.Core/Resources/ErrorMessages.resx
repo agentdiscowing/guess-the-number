@@ -139,7 +139,7 @@
     <value>User with this username or email is not registered on the app.</value>
   </data>
   <data name="GuessTheNumberUsernameAlreadyExistsException" xml:space="preserve">
-    <value>User with this email is already registered on the app</value>
+    <value>User with this username is already registered on the app</value>
   </data>
   <data name="GuessTheNumberUserWasNotCreatedException" xml:space="preserve">
     <value>User was not registrered on the app</value>
