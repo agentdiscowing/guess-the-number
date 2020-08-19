@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module'
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { httpInterceptorProviders } from './http-interceptors';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    SharedModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
