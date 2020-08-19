@@ -56,6 +56,13 @@
                 throw new GuessTheNumberEmailAlreadyExistsException();
             }
 
+            var checkUniqueUsername = await this.userManager.FindByNameAsync(user.Username);
+
+            if (checkUniqueUsername != null)
+            {
+                throw new GuessTheNumberUsernameAlreadyExistsException();
+            }
+
             var newUser = new IdentityUser
             {
                 UserName = user.Username,
