@@ -40,6 +40,10 @@ export class AuthService {
   isLoggedIn(): boolean{
     return localStorage.getItem('id_token') !== null
   }
+
+  logOut(): void{
+    localStorage.removeItem('id_token');
+  }
   
   private setSession(authResult: AuthResult) {
     localStorage.setItem('id_token', authResult.token);
