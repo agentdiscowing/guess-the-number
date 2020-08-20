@@ -1,6 +1,7 @@
 namespace GuessTheNumber.Web
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using GuessTheNumber.BLL.Interfaces;
@@ -108,6 +109,21 @@ namespace GuessTheNumber.Web
                     }
                     await next();
                 });
+
+                app.Use(async (r, next) =>
+                {
+                    await next();
+                    if (r.Response.StatusCode == 404 && !Path.HasExtension(r.Request.Path.Value))
+                    {
+                        r.Request.Path = "/index.html";
+                        await next();
+
+                    }
+                });
+
+                app.UseDefaultFiles();
+
+                app.UseStaticFiles();
 
                 app.UseEndpoints(endpoints =>
                 {
