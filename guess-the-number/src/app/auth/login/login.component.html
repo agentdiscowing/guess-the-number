@@ -1,32 +1,32 @@
 <form [formGroup]="loginForm" (ngSubmit)="login()" class="mt-4">
     <div class="form-group col-md-8 offset-md-2">
       <label for="">Email address</label>
-      <input type="email" class="form-control" id="" placeholder="Enter email" [formControl]="email">
+      <input type="email" class="form-control" id="" placeholder="Enter email" [formControl]="getControl('email')">
     </div>
-      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger form-group col-md-8 offset-md-2">
-        <div *ngIf="email.errors.required">
+      <div *ngIf="needsValidation('email')" class="alert alert-danger form-group col-md-8 offset-md-2">
+        <div *ngIf="getControl('email').errors.required">
           Email is required.
         </div>
-        <div *ngIf="email.errors.email">
+        <div *ngIf="getControl('email').errors.email">
             Invalid email format.
           </div>
       </div>
     <div class="form-group col-md-8 offset-md-2">
       <label for="">Password</label>
-      <input type="password" class="form-control" placeholder="Password" [formControl]="password">
+      <input type="password" class="form-control" placeholder="Password" [formControl]="getControl('password')">
     </div>
-      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger form-group col-md-8 offset-md-2">
-        <div *ngIf="password.errors.required">
+      <div *ngIf="needsValidation('password')" class="alert alert-danger form-group col-md-8 offset-md-2">
+        <div *ngIf="getControl('password').errors.required">
               Password is required.
         </div>
-        <div *ngIf="password.errors.minlength">
+        <div *ngIf="getControl('password').errors.minlength">
               Password must be at least 5 characters long.
         </div>
-        <div *ngIf="password.errors.maxlength">
+        <div *ngIf="getControl('password').errors.maxlength">
               Password must be at most 60 characters long.
         </div>
     </div>
     <div class="form-group col-md-8 offset-md-2">
-    <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Submit</button>
+    <button type="submit" [disabled]="!loginForm.valid"class="btn btn-primary">Submit</button>
     </div>
   </form>

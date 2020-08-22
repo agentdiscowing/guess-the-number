@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-  
+
   loginForm: FormGroup;
 
   constructor(private authService: AuthService){}
@@ -21,13 +21,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  get email() { return this.loginForm.get('email'); }
+  getControl(control: string): AbstractControl {
+    return this.loginForm.get(control);
+  }
 
-  get password() { return this.loginForm.get('password'); }
+  needsValidation(control: string): boolean {
+    let ctrl = this.getControl(control);
+    return ctrl.invalid && (ctrl.dirty || ctrl.touched)
+  }
 
   login(){
     if(this.loginForm.valid){
-      this.authService.login(this.email.value, this.password.value).subscribe(
+      this.authService.login(this.getControl('email').value, this.getControl('password').value).subscribe(
         _ => alert("Logged in"),
         error => console.log(error.error)
       );
