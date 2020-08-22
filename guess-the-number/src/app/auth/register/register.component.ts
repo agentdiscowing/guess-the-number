@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { NewUser } from './newUser';
+import { mustMatchValidator } from '../../validators';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit {
       "password": new FormControl("", [Validators.required, Validators.minLength(5), Validators.maxLength(60)]),
       "confirmPassword": new FormControl("", Validators.required),
       "username": new FormControl("", [Validators.required, Validators.minLength(5), Validators.maxLength(60)]) },
-      {validators: [Validators.required]});
+      mustMatchValidator("password", "confirmPassword"));
   }
 
   getControl(control: string): AbstractControl {
