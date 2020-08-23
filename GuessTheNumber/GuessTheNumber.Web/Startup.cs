@@ -13,7 +13,7 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Web.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -57,6 +57,11 @@ namespace GuessTheNumber.Web
 
             var connectionString = this.Configuration.GetValue<string>("ConnectionString");
 
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "client/dist/guess-the-number";
+            });
+
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
 
@@ -95,6 +100,7 @@ namespace GuessTheNumber.Web
 
                 app.UseAuthorization();
 
+                // to workaround CORS policy
                 app.Use(async (r, next) =>
                 {
                     if (r.Request.Headers.Keys.Contains("Origin", StringComparer.OrdinalIgnoreCase) &&
@@ -110,24 +116,28 @@ namespace GuessTheNumber.Web
                     await next();
                 });
 
-                app.Use(async (r, next) =>
-                {
-                    await next();
-                    if (r.Response.StatusCode == 404 && !Path.HasExtension(r.Request.Path.Value))
-                    {
-                        r.Request.Path = "/index.html";
-                        await next();
-
-                    }
-                });
-
-                app.UseDefaultFiles();
-
                 app.UseStaticFiles();
+                if (!env.IsDevelopment())
+                {
+                    app.UseSpaStaticFiles();
+                }
 
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
+                });
+
+                app.UseSpa(spa =>
+                {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "client";
+
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
                 });
 
                 app.UseSwagger();
