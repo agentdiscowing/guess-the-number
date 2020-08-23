@@ -11,7 +11,7 @@ import { NewUser } from './register/newUser';
 })
 export class AuthService {
 
-  private authUrl = 'https://localhost:5001/api/Account';  // URL to web api
+  private authUrl = 'api/Account';  // URL to web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -44,7 +44,7 @@ export class AuthService {
   logOut(): void{
     localStorage.removeItem('id_token');
   }
-  
+
   private setSession(authResult: AuthResult) {
     localStorage.setItem('id_token', authResult.token);
   }
