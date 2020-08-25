@@ -100,23 +100,8 @@ namespace GuessTheNumber.Web
 
                 app.UseAuthorization();
 
-                // to workaround CORS policy
-                app.Use(async (r, next) =>
-                {
-                    if (r.Request.Headers.Keys.Contains("Origin", StringComparer.OrdinalIgnoreCase) &&
-                        r.Request.Method == "OPTIONS")
-                    {
-                        r.Response.OnStarting(() =>
-                        {
-                            r.Response.StatusCode = 200;
-                            r.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization";
-                            return Task.CompletedTask;
-                        });
-                    }
-                    await next();
-                });
-
                 app.UseStaticFiles();
+
                 if (!env.IsDevelopment())
                 {
                     app.UseSpaStaticFiles();
@@ -129,9 +114,6 @@ namespace GuessTheNumber.Web
 
                 app.UseSpa(spa =>
                 {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                    // see https://go.microsoft.com/fwlink/?linkid=864501
-
                     spa.Options.SourcePath = "client";
 
                     if (env.IsDevelopment())
