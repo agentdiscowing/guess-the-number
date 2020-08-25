@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -12,6 +13,8 @@ import { NewUser } from './register/newUser';
 export class AuthService {
 
   private authUrl = 'api/Account';  // URL to web api
+
+  private jwtHelper: JwtHelperService = new JwtHelperService();
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,8 +40,12 @@ export class AuthService {
     );
   }
 
-  isLoggedIn(): boolean{
-    return localStorage.getItem('id_token') !== null
+  isLoggedIn(): boolean {
+    let token = localStorage.getItem('id_token')
+    if(token !== null){
+      return !this.jwtHelper.isTokenExpired(token)
+    }
+    return false;
   }
 
   logOut(): void{
