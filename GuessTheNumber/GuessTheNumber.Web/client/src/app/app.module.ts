@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
-import { SharedModule } from './shared/shared.module';
+import { SwitcherModule } from './shared/';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
 
@@ -17,7 +17,7 @@ import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
     HttpClientModule,
     LoginModule,
     RegisterModule,
-    SharedModule,
+    SwitcherModule,
     AppRoutingModule,
     AuthRoutingModule
   ],
