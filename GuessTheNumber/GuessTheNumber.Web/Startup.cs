@@ -1,9 +1,6 @@
 namespace GuessTheNumber.Web
 {
     using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.BLL.Services;
     using GuessTheNumber.DAL;
@@ -13,9 +10,9 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Web.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -65,17 +62,8 @@ namespace GuessTheNumber.Web
             services.AddDbContext<GameContext>(options => options.UseSqlServer(connectionString)
                                                                  .UseLazyLoadingProxies());
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-                   .AddRoles<IdentityRole>()
-                   .AddEntityFrameworkStores<GameContext>();
+            services.AddIdentity<GameContext>();
 
-            services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
             services.AddScoped(typeof(IHistoryService), typeof(HistoryService));
