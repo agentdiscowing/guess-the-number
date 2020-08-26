@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { AuthService } from './auth';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,4 +9,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   readonly title = 'Guess the Number';
+
+  constructor(public authService: AuthService){}
+  
+  isLogged: boolean = this.authService.isLoggedIn();
 }
