@@ -13,6 +13,10 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
+  errorBlock: boolean;
+
+  errorMes: string;
+
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -34,10 +38,14 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
+    this.errorBlock = false;
     if(this.registerForm.valid){
       this.authService.register(this.registerForm.value as NewUser).subscribe(
         _ => alert("Registered"),
-        error => console.log(error.error)
+        error => {
+          this.errorBlock = true;
+          this.errorMes = error.error.message
+        }
       );
     }
   }

@@ -10,6 +10,10 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
+  errorBlock: boolean;
+
+  errorMes: string;
+
   constructor(private authService: AuthService){}
 
   ngOnInit(): void {
@@ -31,10 +35,14 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    this.errorBlock = false;
     if(this.loginForm.valid){
       this.authService.login(this.getControl('email').value, this.getControl('password').value).subscribe(
         _ => alert("Logged in"),
-        error => console.log(error.error)
+        error => {
+          this.errorBlock = true;
+          this.errorMes = error.error.message
+        }
       );
     }
   }

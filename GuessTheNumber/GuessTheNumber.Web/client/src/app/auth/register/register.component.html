@@ -44,15 +44,18 @@
     <div class="form-group col-md-6 offset-md-3">
         <label for="">Confirm password</label>
         <input type="password" class="form-control" placeholder="Enter password again" [formControl]="getControl('confirmPassword')">
-      </div>
-        <div *ngIf="needsValidation('confirmPassword')" class="alert alert-danger form-group col-md-6 offset-md-3">
-          <div *ngIf="getControl('confirmPassword').errors.required">
+    </div>
+    <div *ngIf="needsValidation('confirmPassword')" class="alert alert-danger form-group col-md-6 offset-md-3">
+      <div *ngIf="getControl('confirmPassword').errors.required">
                 Confirm password is required.
-          </div>
-          <div *ngIf="getControl('confirmPassword').errors.mustMatch">
+      </div>
+      <div *ngIf="getControl('confirmPassword').errors.mustMatch">
                 Passwords don't match.
       </div>
-      </div>
+    </div>
+    <div class="form-group col-md-6 offset-md-3">
+      <app-error *ngIf="errorBlock" [errorMessage]="errorMes"></app-error>
+    </div>
     <div class="form-group col-md-6 offset-md-3">
     <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary">Submit</button>
     </div>
