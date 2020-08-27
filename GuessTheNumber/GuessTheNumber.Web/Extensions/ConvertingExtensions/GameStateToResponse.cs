@@ -1,19 +1,21 @@
 ﻿namespace GuessTheNumber.Web.Extensions.ConvertingExtensions
 {
     using GuessTheNumber.Core.Resources;
+    using GuessTheNumber.Web.Models.Response;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     public static partial class ConvertingExtensions
     {
-        public static string ToResponse(this GameStates gameState)
+        public static GameStateResponse ToResponse(this GameStates gameState)
         {
-            string message = gameState switch
+            GameStateResponse response = gameState switch
             {
-                GameStates.ACTIVE => GameMessages.GameIsActive,
-                GameStates.WON => GameMessages.GameIsWon,
-                GameStates.OVER => GameMessages.GameIsOver
+                GameStates.ACTIVE => new GameStateResponse(GameMessages.GameIsActive, "active"),
+                GameStates.WON => new GameStateResponse(GameMessages.GameIsWon, "won"),
+                GameStates.OVER => new GameStateResponse(GameMessages.GameIsOver, "over")
             };
-            return message;
+
+            return response;
         }
     }
 }
