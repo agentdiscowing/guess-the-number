@@ -7,6 +7,7 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { SwitcherModule } from './shared/';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
     RegisterModule,
     SwitcherModule,
     AppRoutingModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    GameModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

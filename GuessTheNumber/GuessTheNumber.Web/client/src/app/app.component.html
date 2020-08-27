@@ -1,8 +1,7 @@
 <div class="container">
   <h1 class="text-center mt-4 mb-4">{{title}}</h1>
   <div *ngIf="authService.isLoggedIn();else authBlock">
+    <app-gameplay></app-gameplay>
 </div>
-<div #authBlock>
-  <app-switcher></app-switcher>
-</div>
+<ng-template #authBlock><app-switcher></app-switcher></ng-template>
 </div>
