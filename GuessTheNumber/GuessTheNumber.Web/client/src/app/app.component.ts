@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from './auth';
 
@@ -10,5 +11,15 @@ import { AuthService } from './auth';
 export class AppComponent {
   readonly title = 'Guess the Number';
 
-  constructor(public authService: AuthService){}
+  constructor(public authService: AuthService, private router: Router){
+    if(this.authService.isLoggedIn()){
+      this.router.navigate(['play']);
+    }
+    else{
+      this.router.navigate(['login'])
+    }
+
+  }
+
+
 }
