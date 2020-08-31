@@ -7,7 +7,7 @@ import { httpInterceptorProviders } from './http-interceptors';
 import { SwitcherModule } from './shared/';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
-import { GameModule } from './game/game.module';
+import { GameModule } from './game';
 
 @NgModule({
   declarations: [

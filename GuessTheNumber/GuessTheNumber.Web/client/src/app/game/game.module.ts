@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from './message/message.component';
 import { GameplayComponent } from './gameplay/gameplay.component';
-
-
+import { GameRoutingModule } from './game-routing.module';
 
 @NgModule({
   declarations: [MessageComponent, GameplayComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    GameRoutingModule
   ],
   exports: [
     MessageComponent,
