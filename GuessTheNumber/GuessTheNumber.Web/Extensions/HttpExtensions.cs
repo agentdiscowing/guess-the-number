@@ -13,15 +13,5 @@
 
             return httpContext.User.FindFirst("id").Value;
         }
-
-        public static int? GetCurrentGameId(this HttpContext httpContext)
-        {
-            if (httpContext.Session.GetString("GameId") == null)
-            {
-                return null;
-            }
-
-            return int.Parse(httpContext.Session.GetString("GameId"));
-        }
     }
 }
