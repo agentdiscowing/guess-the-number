@@ -7,10 +7,10 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.DAL.Entities;
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
-    using GuessTheNumber.Web.Services;
+    using GuessTheNumber.Web.Global;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
@@ -67,6 +67,8 @@ namespace GuessTheNumber.Web
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
             services.AddScoped(typeof(IHistoryService), typeof(HistoryService));
+
+            services.AddSingleton<CurrentGame>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
