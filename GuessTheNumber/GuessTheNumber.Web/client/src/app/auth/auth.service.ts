@@ -52,6 +52,8 @@ export class AuthService {
   }
 
   logOut(): void{
+    let url = this.authUrl + "/logout";
+    this.http.post(url, {}, this.httpOptions).subscribe();
     localStorage.removeItem('id_token');
   }
 
