@@ -3,6 +3,7 @@
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
+    using GuessTheNumber.Web.Global;
     using GuessTheNumber.Web.Models.Request;
     using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,13 @@
 
         private readonly IGameService gameService;
 
-        public AccountController(IAuthService authenticationService, IGameService gameService)
+        private CurrentGame currentGame;
+
+        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame)
         {
             this.authService = authenticationService;
             this.gameService = gameService;
+            this.currentGame = currentGame;
         }
 
         [HttpPost("login")]
@@ -40,7 +44,7 @@
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.HttpContext.GetCurrentGameId());
+            this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.currentGame.CurrentGameId);
 
             return Ok();
         }
