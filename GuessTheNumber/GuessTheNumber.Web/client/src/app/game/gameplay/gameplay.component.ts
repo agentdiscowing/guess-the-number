@@ -27,7 +27,10 @@ export class GameplayComponent implements OnInit {
            this.noActiveGame = true;
         }
       },
-      error => this.messages.push({messageText: error.error.message, fromMe: false})
+      error => {
+        this.messages.push({messageText: error.error.message, fromMe: false});
+        this.noActiveGame = true;
+      }
     );
   }
 
@@ -40,13 +43,14 @@ export class GameplayComponent implements OnInit {
   }
 
   startGame(number: number): void {
+    this.noActiveGame = false;
     this.messages.push({messageText: number.toString(), fromMe: true});
     this.gameService.startGame(number).subscribe(
-      newGame => {
-        this.messages.push({messageText: newGame.message, fromMe: false})
-        this.noActiveGame = false;
-      },
-      error => this.messages.push({messageText: error.error.message, fromMe: false})
+      newGame => this.messages.push({messageText: newGame.message, fromMe: false}),
+      error => {
+        this.messages.push({messageText: error.error.message, fromMe: false});
+        this.noActiveGame = true;
+      }
     );
   }
 
