@@ -1,7 +1,7 @@
 <div class="container">
   <div class='row'>
     <div class="offset-md-4 col-md-4">
-  <h1 class="mt-4 mb-1">{{title}}</h1>
+  <h1 class="text-center mt-4 mb-1">{{title}}</h1>
 </div>
 <div *ngIf="authService.isLoggedIn()" class='offset-md-2 col-md-2 mt-3 pt-4 text-right'>
    <a [routerLink]="['login']"
