@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
 import { GameMessage } from './models/gameMessage';
+import { Game } from './models/game';
 
 @Component({
   selector: 'app-gameplay',
@@ -11,47 +12,74 @@ export class GameplayComponent implements OnInit {
 
   public messages: GameMessage[] = new Array();
 
-  public noActiveGame: boolean = false;
+  public currentGameState: Game = {
+    state: null,
+    message: null
+  };
 
-  constructor(private gameService: GameService) { }
+  public isGameOwner: boolean;
 
-  ngOnInit(): void {
-    this.getState();
+  public noActiveGame = () : boolean => this.currentGameState.state != "active";
+
+  constructor(private gameService: GameService) { 
+   this.updateState(true);
   }
 
-  getState(): void {
-    this.gameService.getState().subscribe(
-      game => {
-        this.messages.push({messageText: game.message, fromMe: false});
-        if (game.state !== "active") {
-           this.noActiveGame = true;
-        }
+  ngOnInit(): void {
+    this.subscribeToEvents();
+  }
+
+  updateState(showMessage: boolean = false): void {
+    this.gameService.updateState().subscribe(
+      game => this.currentGameState = game,
+      error => this.currentGameState = {
+        message: error.error.message,
+        state: "none"
       },
-      error => {
-        this.messages.push({messageText: error.error.message, fromMe: false});
-        this.noActiveGame = true;
+      () => {
+        if (showMessage){
+          this.addMessage(this.currentGameState.message, false);
+        }
       }
     );
   }
 
   sendGuess(number: number): void {
-    this.messages.push({messageText: number.toString(), fromMe: true});
+    this.addMessage(number.toString(), true);
     this.gameService.sendGuess(number).subscribe(
-      guess => this.messages.push({messageText: guess.result, fromMe: false}),
-      error => this.messages.push({messageText: error.error.message, fromMe: false})
+      guess => this.addMessage(guess.result, false),
+      error => this.addMessage(error.error.message, false)
     );
   }
 
   startGame(number: number): void {
-    this.noActiveGame = false;
-    this.messages.push({messageText: number.toString(), fromMe: true});
+    this.addMessage(number.toString(), true);
     this.gameService.startGame(number).subscribe(
-      newGame => this.messages.push({messageText: newGame.message, fromMe: false}),
-      error => {
-        this.messages.push({messageText: error.error.message, fromMe: false});
-        this.noActiveGame = true;
-      }
+      newGame => {
+        this.addMessage(newGame.message, false);
+        this.isGameOwner = true;
+      },
+      error => this.addMessage(error.error.message, false)
     );
+  }
+
+  addMessage(message: string, fromMe: boolean): void{
+    this.messages.push({messageText: message, fromMe: fromMe});
+  }
+
+  subscribeToEvents(): void {
+    this.gameService.gameEvents.gameStarted.subscribe(
+      (username: string) => {
+        this.addMessage(`${username} has started a new game`, false);
+        this.updateState();
+      }
+    )
+    this.gameService.gameEvents.gameWon.subscribe(
+      (username: string) => {
+        this.addMessage(`${username} has won the game`, false);
+        this.updateState();
+      }
+    )
   }
 
 }
