@@ -8,6 +8,7 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Global;
+    using GuessTheNumber.Web.Hubs;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -38,6 +39,8 @@ namespace GuessTheNumber.Web
             services.AddSwagger();
 
             services.AddJwtTokens(this.Configuration);
+
+            services.AddSignalR();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -100,6 +103,7 @@ namespace GuessTheNumber.Web
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
+                    endpoints.MapHub<GameHub>("/gamehub");
                 });
 
                 app.UseSpa(spa =>
