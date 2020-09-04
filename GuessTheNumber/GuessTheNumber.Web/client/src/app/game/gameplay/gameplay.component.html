@@ -10,7 +10,7 @@
                 <button class="btn btn-primary" (click)="startGame(gameNumber.value)">Start</button>
           </div>
     </div>
-    <div id='responseArea' *ngIf="!isGameOwner && !noActiveGame()" class='form-inline'>
+    <div id='responseArea' *ngIf="!isGameOwner() && !noActiveGame()" class='form-inline'>
         <div class="form-group mb-2 offset-md-3 mr-sm-2">
             <input type="number" class="form-control" #response placeholder="Enter value">
         </div>
