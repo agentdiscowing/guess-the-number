@@ -4,9 +4,13 @@
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Global;
+    using GuessTheNumber.Web.Hubs;
+    using GuessTheNumber.Web.Interfaces;
     using GuessTheNumber.Web.Models.Request;
     using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+    using System.Threading.Tasks;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -18,11 +22,14 @@
 
         private CurrentGame currentGame;
 
-        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame)
+        private readonly IHubContext<GameHub, IGameClient> gameHubContext;
+
+        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame, IHubContext<GameHub, IGameClient> gameHubContext)
         {
             this.authService = authenticationService;
             this.gameService = gameService;
             this.currentGame = currentGame;
+            this.gameHubContext = gameHubContext;
         }
 
         [HttpPost("login")]
@@ -42,9 +49,13 @@
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.currentGame.CurrentGameId);
+            if (this.currentGame.CurrentGameOwnerId == this.HttpContext.GetUserId())
+            {
+                await this.gameHubContext.Clients.All.SendGameOverMessage();
+            }
 
             return Ok();
         }
