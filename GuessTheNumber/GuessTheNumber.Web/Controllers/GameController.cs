@@ -32,12 +32,11 @@
         }
 
         [HttpPost("start/{number}")]
-        public async Task<IActionResult> StartGame(int number)
+        public IActionResult StartGame(int number)
         {
             int currentGameId = this.gameService.StartGame(this.HttpContext.GetUserId(), number, this.currentGame.CurrentGameId);
             this.currentGame.SetNewGame(currentGameId, this.HttpContext.GetUserId());
-            await this.gameHubContext.Clients.AllExcept(this.HttpContext.Connection.Id).SendGameStartedMessage(this.HttpContext.User.Identity.Name);
-            return Ok(new GameStartedResponse(number));
+            return Ok(new GameStartedResponse(number, this.HttpContext.User.Identity.Name));
         }
 
         [HttpPost("guess/{number}")]
@@ -46,7 +45,7 @@
             var guessResult = this.gameService.MakeGuess(this.HttpContext.GetUserId(), number, this.currentGame.CurrentGameId);
             if (guessResult.Result == GameAttemptResults.WIN)
             {
-                await this.gameHubContext.Clients.AllExcept(this.HttpContext.Connection.Id).SendGameWonMessage(this.HttpContext.User.Identity.Name);
+                await this.gameHubContext.Clients.All.SendGameWonMessage(this.HttpContext.User.Identity.Name);
             }
             return Ok(guessResult.ToResponse());
         }
@@ -55,7 +54,7 @@
         public IActionResult GetState()
         {
             var gameState = this.gameService.GetGameState(this.currentGame.CurrentGameId);
-            return Ok(gameState.ToResponse());
+            return Ok(gameState.ToResponse(this.currentGame.IsOwner(this.HttpContext.GetUserId())));
         }
     }
 }
