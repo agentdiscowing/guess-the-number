@@ -10,15 +10,5 @@
         {
             return this.Clients.Others.SendGameStartedMessage($"{ownerUsername} started a new game");
         }
-
-        public Task NotifyGameWon(string winnerUsername)
-        {
-            return this.Clients.Others.SendGameWonMessage($"{winnerUsername} won the game");
-        }
-
-        public Task NotifyGameOver()
-        {
-            return this.Clients.Others.SendGameOverMessage($"Game is interrupted");
-        }
     }
 }
