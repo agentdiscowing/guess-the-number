@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { GameService } from '../game.service';
 import { GameMessage } from './models/gameMessage';
 import { Game } from './models/game';
@@ -14,12 +14,13 @@ export class GameplayComponent implements OnInit {
 
   public currentGameState: Game = {
     state: null,
-    message: null
+    message: null,
+    isOwner: false
   };
 
-  public isGameOwner: boolean;
+  public isGameOwner = () : boolean => { return this.currentGameState.isOwner }
 
-  public noActiveGame = () : boolean => this.currentGameState.state != "active";
+  public noActiveGame = () : boolean => { return this.currentGameState.state != "active" }
 
   constructor(private gameService: GameService) { 
    this.updateState(true);
@@ -34,9 +35,10 @@ export class GameplayComponent implements OnInit {
       game => this.currentGameState = game,
       error => this.currentGameState = {
         message: error.error.message,
-        state: "none"
-      },
-      () => {
+        state: "none",
+        isOwner: false
+      }).add(
+        () => {
         if (showMessage){
           this.addMessage(this.currentGameState.message, false);
         }
@@ -55,12 +57,9 @@ export class GameplayComponent implements OnInit {
   startGame(number: number): void {
     this.addMessage(number.toString(), true);
     this.gameService.startGame(number).subscribe(
-      newGame => {
-        this.addMessage(newGame.message, false);
-        this.isGameOwner = true;
-      },
+      newGame => this.addMessage(newGame.message, false),
       error => this.addMessage(error.error.message, false)
-    );
+      ).add(() => this.updateState());
   }
 
   addMessage(message: string, fromMe: boolean): void{
@@ -68,18 +67,21 @@ export class GameplayComponent implements OnInit {
   }
 
   subscribeToEvents(): void {
+    Object.keys(this.gameService.gameEvents).forEach((key: string) => {
+        let event = this.gameService.gameEvents[key];
+        event.subscribe(
+          () => this.updateState()
+        );
+    });
+
     this.gameService.gameEvents.gameStarted.subscribe(
-      (username: string) => {
-        this.addMessage(`${username} has started a new game`, false);
-        this.updateState();
-      }
-    )
+      (message: string) => this.addMessage(message, false));
+    
     this.gameService.gameEvents.gameWon.subscribe(
-      (username: string) => {
-        this.addMessage(`${username} has won the game`, false);
-        this.updateState();
-      }
-    )
+      (winner: string) => this.addMessage(`${winner} has won the game.`, false));
+    
+    this.gameService.gameEvents.gameOver.subscribe(
+      () => this.addMessage("Current game was aborted.", false));
   }
 
 }

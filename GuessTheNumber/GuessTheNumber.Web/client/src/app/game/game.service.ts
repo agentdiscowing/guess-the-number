@@ -19,7 +19,7 @@ export class GameService {
   public gameEvents = {
     gameStarted: new EventEmitter<string>(),
     gameWon: new EventEmitter<string>(),
-    gameOver: EventEmitter,
+    gameOver: new EventEmitter<void>(),
   }
 
   private httpOptions = {
@@ -43,7 +43,10 @@ export class GameService {
 
   startGame(number: number): Observable<GameStartedResponse> {
     let url = this.gameUrl + `/start/${number}`;
-    return this.http.post<GameStartedResponse>(url, this.httpOptions);
+    return this.http.post<GameStartedResponse>(url, this.httpOptions).pipe(
+      tap(
+        game => this.hubConnection.send("NotifyGameStarted", game.ownerUsername)
+      ));
   }
 
   private buildConnection = () => {
@@ -70,12 +73,12 @@ export class GameService {
   };
 
   private registerEvents = () => {
-    this.hubConnection.on("SendGameStartedMessage", (data: string) => {
-      this.gameEvents.gameStarted.emit(data);
-    });
-    this.hubConnection.on("SendGameWonMessage", (data: string) => {
-      this.gameEvents.gameWon.emit(data);
-    });
+    this.hubConnection.on("SendGameStartedMessage", 
+                          (data: string) => this.gameEvents.gameStarted.emit(data));
+    this.hubConnection.on("SendGameWonMessage", 
+                          (data: string) => this.gameEvents.gameWon.emit(data));
+    this.hubConnection.on("SendGameOverMessage", 
+                          () => this.gameEvents.gameOver.emit());
   }
 
 }
