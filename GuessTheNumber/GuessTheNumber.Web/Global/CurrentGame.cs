@@ -11,5 +11,10 @@
             this.CurrentGameId = gameId;
             this.CurrentGameOwnerId = ownerId;
         }
+
+        public bool IsOwner(string userId)
+        {
+            return this.CurrentGameOwnerId == userId;
+        }
     }
 }

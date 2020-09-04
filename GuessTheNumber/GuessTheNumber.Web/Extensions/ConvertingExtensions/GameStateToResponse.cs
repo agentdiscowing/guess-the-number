@@ -6,13 +6,13 @@
 
     public static partial class ConvertingExtensions
     {
-        public static GameStateResponse ToResponse(this GameStates gameState)
+        public static GameStateResponse ToResponse(this GameStates gameState, bool isOwner)
         {
             GameStateResponse response = gameState switch
             {
-                GameStates.ACTIVE => new GameStateResponse(GameMessages.GameIsActive, "active"),
-                GameStates.WON => new GameStateResponse(GameMessages.GameIsWon, "won"),
-                GameStates.OVER => new GameStateResponse(GameMessages.GameIsOver, "over")
+                GameStates.ACTIVE => new GameStateResponse(GameMessages.GameIsActive, "active", isOwner),
+                GameStates.WON => new GameStateResponse(GameMessages.GameIsWon, "won", isOwner),
+                GameStates.OVER => new GameStateResponse(GameMessages.GameIsOver, "over", isOwner)
             };
 
             return response;
