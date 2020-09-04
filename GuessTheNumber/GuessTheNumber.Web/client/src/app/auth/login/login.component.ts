@@ -38,8 +38,7 @@ export class LoginComponent implements OnInit {
     this.errorBlock = false;
     if(this.loginForm.valid){
       this.authService.login(this.getControl('email').value, this.getControl('password').value).subscribe(
-        _ => alert("Logged in"),
-        error => {
+        (error: any) => {
           this.errorBlock = true;
           this.errorMes = error.error.message
         }

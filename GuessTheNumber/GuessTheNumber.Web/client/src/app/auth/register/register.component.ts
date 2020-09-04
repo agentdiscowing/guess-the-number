@@ -41,8 +41,7 @@ export class RegisterComponent implements OnInit {
     this.errorBlock = false;
     if(this.registerForm.valid){
       this.authService.register(this.registerForm.value as NewUser).subscribe(
-        _ => alert("Registered"),
-        error => {
+        (error: any) => {
           this.errorBlock = true;
           this.errorMes = error.error.message
         }
