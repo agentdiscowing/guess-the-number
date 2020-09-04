@@ -8,6 +8,6 @@
 
         Task SendGameWonMessage(string message);
 
-        Task SendGameOverMessage(string message);
+        Task SendGameOverMessage();
     }
 }
