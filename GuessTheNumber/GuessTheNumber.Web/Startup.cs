@@ -70,6 +70,7 @@ namespace GuessTheNumber.Web
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
             services.AddScoped(typeof(IHistoryService), typeof(HistoryService));
+            services.AddSingleton(typeof(ICommentService), typeof(CommentService));
 
             services.AddSingleton<CurrentGame>();
         }
