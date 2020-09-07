@@ -8,6 +8,7 @@ import { SwitcherModule } from './shared/';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
 import { GameModule } from './game';
+import { CommentSectionModule } from './comment-section';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { GameModule } from './game';
     SwitcherModule,
     AppRoutingModule,
     AuthRoutingModule,
-    GameModule
+    GameModule,
+    CommentSectionModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
