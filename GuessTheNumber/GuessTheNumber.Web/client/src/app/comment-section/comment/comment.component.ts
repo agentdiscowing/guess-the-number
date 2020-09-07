@@ -11,8 +11,6 @@ export class CommentComponent implements OnInit {
 
   @Input() public comment: Comment;
 
-  @Output() commentIsDeleted: EventEmitter<number> = new EventEmitter();
-
   public editMode: boolean = false;
 
   constructor(private commentService: CommentService) { }
@@ -24,10 +22,7 @@ export class CommentComponent implements OnInit {
     if(!this.comment.isOwned){
       return;
     }
-    this.commentService.deleteComment(this.comment.id).subscribe(
-      _ => this.commentIsDeleted.emit(this.comment.id),
-      error => alert("You are not allowed to delete other users' comments")
-    );
+    this.commentService.deleteComment(this.comment.id).subscribe();
   }
 
   edit(){
@@ -39,10 +34,7 @@ export class CommentComponent implements OnInit {
 
   saveChanges(editedComment: string){
     this.editMode = false;
-    this.commentService.editComment(this.comment.id, editedComment).subscribe(
-      _ => this.comment.text = editedComment,
-      error => alert("You are not allowed to change other users' comments")
-    );
+    this.commentService.editComment(this.comment.id, editedComment).subscribe();
   }
 
 }
