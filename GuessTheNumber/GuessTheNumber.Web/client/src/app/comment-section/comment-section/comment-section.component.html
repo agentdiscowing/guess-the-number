@@ -1,0 +1,13 @@
+<div class="container">
+<div id="comment-section">
+    <div *ngFor="let comment of comments;">
+        <app-comment [comment]="comment"></app-comment>
+    </div>
+</div>
+<div id="comment-enter" class="text-center mt-2">
+<div class="form-group">
+<textarea #commentText class="form-control shadow-sm" rows="3"></textarea>
+</div>
+<button class="btn btn-primary" (click)="sendComment(commentText.value)">Send</button>
+</div>
+</div>

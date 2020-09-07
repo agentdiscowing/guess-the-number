@@ -1,0 +1,16 @@
+#comment-section{
+    height: 500px;
+    max-height: 500px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* hiding scrollbar on message area*/
+#comment-section::-webkit-scrollbar { /* Chrome, Opera*/
+    display: none;
+}
+#comment-section {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
