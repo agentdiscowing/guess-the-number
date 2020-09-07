@@ -5,6 +5,7 @@
     using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -21,9 +22,9 @@
         [HttpPost("send")]
         public IActionResult SendComment(NewCommentRequest comment)
         {
-            int commentId = this.commentService.SendComment(comment.ToContract(this.HttpContext.User.Identity.Name));
+            var newComment = this.commentService.SendComment(comment.ToContract(this.HttpContext.User.Identity.Name));
 
-            return Ok(commentId);
+            return Ok(newComment);
         }
 
         [HttpDelete("delete/{commentId}")]
@@ -45,7 +46,7 @@
         [HttpGet("all")]
         public IActionResult GetCommentSection()
         {
-            var comments = this.commentService.GetComments();
+            var comments = this.commentService.GetComments().Select(c => c.ToResponse(this.HttpContext.User.Identity.Name));
 
             return Ok(comments);
         }
