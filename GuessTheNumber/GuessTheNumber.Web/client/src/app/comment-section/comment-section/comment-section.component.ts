@@ -14,6 +14,7 @@ export class CommentSectionComponent implements OnInit {
   constructor(private commentService: CommentService) { }
 
   ngOnInit(): void {
+    this.subscribeToEvents();
     this.getComments();
   }
 
@@ -25,7 +26,28 @@ export class CommentSectionComponent implements OnInit {
 
   sendComment(text: string){
     this.commentService.sendComment(text).subscribe(
-      message => this.comments.push(message)
+      message => {
+        message.isOwned = true;
+        this.comments.push(message)
+      }
+    );
+    document.getElementById('commentText').value = "";
+  }
+
+  private subscribeToEvents(){
+    this.commentService.commentEvents.commentAdded.subscribe(
+      newComment => this.comments.push(newComment)
+    );
+
+    this.commentService.commentEvents.commentDeleted.subscribe(
+      deletedId => this.comments = this.comments.filter(c => c.id !== deletedId)
+    );
+
+    this.commentService.commentEvents.commentEdited.subscribe(
+      editedComment => {
+        let comment = this.comments.find(c => c.id == editedComment.id);
+        comment.text = editedComment.text;
+      }
     );
   }
 
