@@ -105,6 +105,7 @@ namespace GuessTheNumber.Web
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<GameHub>("/gamehub");
+                    endpoints.MapHub<CommentHub>("/commenthub");
                 });
 
                 app.UseSpa(spa =>
