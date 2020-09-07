@@ -47,7 +47,7 @@
             return this.comments.OrderBy(comment => comment.PostDate);
         }
 
-        public int SendComment(CommentContract comment)
+        public CommentContract SendComment(CommentContract comment)
         {
             comment.Id = this.nextId;
 
@@ -55,7 +55,7 @@
 
             this.comments.Add(comment);
 
-            return comment.Id;
+            return comment;
         }
     }
 }

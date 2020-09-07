@@ -5,7 +5,7 @@
 
     public interface ICommentService
     {
-        int SendComment(CommentContract comment);
+        CommentContract SendComment(CommentContract comment);
 
         void DeleteComment(int commentId, string username);
 
