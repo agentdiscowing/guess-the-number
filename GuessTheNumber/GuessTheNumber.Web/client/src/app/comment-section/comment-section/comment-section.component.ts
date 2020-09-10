@@ -31,7 +31,6 @@ export class CommentSectionComponent implements OnInit {
         this.comments.push(message)
       }
     );
-    document.getElementById('commentText').value = "";
   }
 
   private subscribeToEvents(){
