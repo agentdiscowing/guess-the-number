@@ -115,6 +115,51 @@ namespace GuessTheNumber.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh token user provided does not exist in database.
+        /// </summary>
+        public static string GuessTheNumberRefreshTokenDoesNotExistException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberRefreshTokenDoesNotExistException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token expiration time passed.
+        /// </summary>
+        public static string GuessTheNumberRefreshTokenHasExpiredException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberRefreshTokenHasExpiredException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token user provided has been invalidated.
+        /// </summary>
+        public static string GuessTheNumberRefreshTokenIsInvalidatedException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberRefreshTokenIsInvalidatedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token user provided has already been used.
+        /// </summary>
+        public static string GuessTheNumberRefreshTokenIsUsedException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberRefreshTokenIsUsedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token and access token ids don&apos;t match.
+        /// </summary>
+        public static string GuessTheNumberRefreshTokenWrongIdException {
+            get {
+                return ResourceManager.GetString("GuessTheNumberRefreshTokenWrongIdException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User with this username or email is not registered on the app..
         /// </summary>
         public static string GuessTheNumberUserDoesNotExistException {

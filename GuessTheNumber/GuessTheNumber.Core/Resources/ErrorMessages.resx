@@ -135,6 +135,21 @@
   <data name="GuessTheNumberOwnerAttemptException" xml:space="preserve">
     <value>Making attempt on one's own game is not allowed</value>
   </data>
+  <data name="GuessTheNumberRefreshTokenDoesNotExistException" xml:space="preserve">
+    <value>Refresh token user provided does not exist in database</value>
+  </data>
+  <data name="GuessTheNumberRefreshTokenHasExpiredException" xml:space="preserve">
+    <value>Refresh token expiration time passed</value>
+  </data>
+  <data name="GuessTheNumberRefreshTokenIsInvalidatedException" xml:space="preserve">
+    <value>Refresh token user provided has been invalidated</value>
+  </data>
+  <data name="GuessTheNumberRefreshTokenIsUsedException" xml:space="preserve">
+    <value>Refresh token user provided has already been used</value>
+  </data>
+  <data name="GuessTheNumberRefreshTokenWrongIdException" xml:space="preserve">
+    <value>Refresh token and access token ids don't match</value>
+  </data>
   <data name="GuessTheNumberUserDoesNotExistException" xml:space="preserve">
     <value>User with this username or email is not registered on the app.</value>
   </data>
