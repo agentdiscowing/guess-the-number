@@ -5,8 +5,10 @@
 
     public interface IAuthService
     {
-        Task<string> LoginAsync(string email, string password);
+        Task<AuthenticationResult> LoginAsync(string email, string password);
 
-        Task<string> RegisterAsync(NewUserContract newUser);
+        Task<AuthenticationResult> RegisterAsync(NewUserContract newUser);
+
+        Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
     }
 }
