@@ -1,5 +1,6 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
+    using System.Threading.Tasks;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
@@ -7,10 +8,9 @@
     using GuessTheNumber.Web.Hubs;
     using GuessTheNumber.Web.Interfaces;
     using GuessTheNumber.Web.Models.Request;
-    using GuessTheNumber.Web.Models.Response;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
-    using System.Threading.Tasks;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -33,21 +33,22 @@
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginUserRequest creds)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest creds)
         {
-            var token = this.authService.LoginAsync(creds.Email, creds.Password);
+            var authResult = await this.authService.LoginAsync(creds.Email, creds.Password);
 
-            return Ok(new AuthSuccessResponse(token.Result));
+            return Ok(authResult);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] NewUserRequest newUser)
+        public async Task<IActionResult> RegisterAsync([FromBody] NewUserRequest newUser)
         {
-            var token = this.authService.RegisterAsync(newUser.ToContract());
+            var authResult = await this.authService.RegisterAsync(newUser.ToContract());
 
-            return Ok(new AuthSuccessResponse(token.Result));
+            return Ok(authResult);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -58,6 +59,14 @@
             }
 
             return Ok();
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
+        {
+            var authResult = await this.authService.RefreshTokenAsync(refreshTokenRequest.AccessToken, refreshTokenRequest.RefreshToken);
+
+            return Ok(authResult);
         }
     }
 }
