@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { AuthResult } from './authResult';
@@ -44,20 +44,60 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    let token = localStorage.getItem('id_token')
-    if(token !== null){
-      return !this.jwtHelper.isTokenExpired(token)
+    let accessToken = localStorage.getItem('id_token'),
+        refreshToken = localStorage.getItem('refresh_token');
+
+    if(!accessToken || !refreshToken){
+      return false;
     }
-    return false;
+
+    if(!this.jwtHelper.isTokenExpired(accessToken)){
+      return true;
+    }
   }
 
   logOut(): void{
     let url = this.authUrl + "/logout";
+    this.stopRefreshTokenTimer();
     this.http.post(url, {}, this.httpOptions).subscribe();
     localStorage.removeItem('id_token');
+    localStorage.removeItem('refresh_token');
   }
 
-  private setSession(authResult: AuthResult) {
-    localStorage.setItem('id_token', authResult.token);
+  refreshToken(): Observable<AuthResult>{
+    let url = this.authUrl + '/refresh';
+    let data: AuthResult = {
+      accessToken: localStorage.getItem("id_token"),
+      refreshToken: localStorage.getItem("refresh_token")
+    }
+    return this.http.post<AuthResult>(url, data, this.httpOptions).pipe(
+      tap(
+        newKeys => this.setSession(newKeys),
+        error => console.log(error)
+      )
+    );
   }
+  
+  private refreshTokenTimeout;
+
+  private setSession(authResult: AuthResult): void {
+    let expireTime = this.jwtHelper.getTokenExpirationDate(authResult.accessToken).getTime();
+
+    // i refresh token 2 minutes before it is expired
+    let refreshTime = expireTime - Date.now() - 120 * 1000;
+    this.startRefreshTokenTimer(refreshTime);
+
+    console.log(`${expireTime}, ${refreshTime}`);
+
+    localStorage.setItem('id_token', authResult.accessToken);
+    localStorage.setItem('refresh_token', authResult.refreshToken);
+  }
+
+  private startRefreshTokenTimer(timeout: number): void {
+        this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout); 
+  }
+
+  private stopRefreshTokenTimer(): void {
+    clearTimeout(this.refreshTokenTimeout);
+}
 }
