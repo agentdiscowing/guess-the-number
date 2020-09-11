@@ -13,6 +13,8 @@
 
         public DbSet<Game> Games { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,6 +29,8 @@
                 q.Number
             });
 
+            modelBuilder.Entity<RefreshToken>().HasKey(rt => rt.Token);
+
             modelBuilder.Entity<Game>().HasOne(g => g.Owner).WithMany().HasForeignKey(g => g.OwnerId);
 
             modelBuilder.Entity<Game>().HasOne(g => g.Winner).WithMany().HasForeignKey(g => g.WinnerId);
@@ -34,6 +38,8 @@
             modelBuilder.Entity<Guess>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
 
             modelBuilder.Entity<Guess>().HasOne(a => a.Game).WithMany(g => g.Attempts).HasForeignKey(a => a.GameId);
+
+            modelBuilder.Entity<RefreshToken>().HasOne(rt => rt.User).WithMany().HasForeignKey(rt => rt.UserId);
         }
     }
 }
