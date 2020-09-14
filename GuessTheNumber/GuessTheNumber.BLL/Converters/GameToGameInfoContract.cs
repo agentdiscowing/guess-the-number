@@ -14,7 +14,8 @@
                 Length = game.EndTime.Value.Subtract(game.StartTime),
                 Number = game.Number,
                 ParticipatsIds = game.Attempts.Select(a => a.UserId).Distinct().ToArray(),
-                WinnerId = game.WinnerId
+                WinnerId = game.WinnerId,
+                OwnerId = game.OwnerId
             };
         }
     }

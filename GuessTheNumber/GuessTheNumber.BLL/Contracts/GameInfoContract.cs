@@ -13,5 +13,7 @@
         public string WinnerId { get; set; }
 
         public string[] ParticipatsIds { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }
