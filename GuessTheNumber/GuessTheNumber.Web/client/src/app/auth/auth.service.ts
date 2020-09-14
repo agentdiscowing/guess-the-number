@@ -87,8 +87,6 @@ export class AuthService {
     let refreshTime = expireTime - Date.now() - 120 * 1000;
     this.startRefreshTokenTimer(refreshTime);
 
-    console.log(`${expireTime}, ${refreshTime}`);
-
     localStorage.setItem('id_token', authResult.accessToken);
     localStorage.setItem('refresh_token', authResult.refreshToken);
   }
