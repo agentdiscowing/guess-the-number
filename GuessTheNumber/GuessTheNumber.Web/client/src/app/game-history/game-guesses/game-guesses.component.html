@@ -1,0 +1,16 @@
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Guess</th>
+        </tr>
+    </thead>
+    <tbody>
+         <tr *ngFor="let guess of guesses;" scope="row">
+           <td [textContent]="guess.username">
+           </td>
+           <td [textContent]="guess.number">
+          </td>
+         </tr>
+    </tbody>
+</table>
