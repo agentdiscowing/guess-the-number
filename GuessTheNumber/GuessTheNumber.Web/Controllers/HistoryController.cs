@@ -1,6 +1,8 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
     using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Web.Extensions;
+    using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -17,17 +19,17 @@
         }
 
         [HttpGet("{page}")]
-        public IActionResult GetGames(int page, [FromBody] int gamesPerPage)
+        public IActionResult GetGames(int page, int gamesPerPage)
         {
             var gameList = this.historyService.GetGameHistory(page, gamesPerPage);
-            return Ok(gameList);
+            return Ok(gameList.ToResponseList(this.HttpContext.GetUserId()));
         }
 
         [HttpGet("guesses")]
-        public IActionResult GetGameGuesses([FromBody] int gameId)
+        public IActionResult GetGameGuesses(int gameId)
         {
-            var gameList = this.historyService.GetGameGuesses(gameId);
-            return Ok(gameList);
+            var guessesList = this.historyService.GetGameGuesses(gameId);
+            return Ok(guessesList);
         }
     }
 }
