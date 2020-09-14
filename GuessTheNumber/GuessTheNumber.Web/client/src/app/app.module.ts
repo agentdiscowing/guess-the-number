@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthRoutingModule, LoginModule, RegisterModule } from './auth';
 import { GameModule } from './game';
 import { CommentSectionModule } from './comment-section';
+import { GameHistoryModule, GameHistoryRoutingModule } from './game-history';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,10 @@ import { CommentSectionModule } from './comment-section';
     AppRoutingModule,
     AuthRoutingModule,
     GameModule,
-    CommentSectionModule
+    CommentSectionModule,
+    GameHistoryModule,
+    GameHistoryRoutingModule,
+    NgbModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
