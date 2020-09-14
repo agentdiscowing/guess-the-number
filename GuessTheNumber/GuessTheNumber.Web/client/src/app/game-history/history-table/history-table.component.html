@@ -1,0 +1,24 @@
+<div infinite-scroll
+        [infiniteScrollDistance]="1"
+        [infiniteScrollThrottle]="300"
+        (scrolled)="loadMore()">
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col" *ngFor="let field of fields;">{{field}}</th>
+        </tr>
+    </thead>
+    <tbody>
+         <tr *ngFor="let game of games;" scope="row" 
+         [ngClass]="{'participant': game.isParticipant, 
+                      'winner': game.isWinner, 
+                      'owner': game.isOwner}"
+                      (click)="showGame(game.id)">
+           <td [textContent]="game.number">
+           </td>
+           <td [textContent]="game.length">
+          </td>
+         </tr>
+    </tbody>
+</table>
+</div>

@@ -1,0 +1,9 @@
+.participant{
+    background-color: khaki;
+}
+.winner{
+    background-color: lightgreen;
+}
+.owner{
+    background-color: lightgray;
+}
