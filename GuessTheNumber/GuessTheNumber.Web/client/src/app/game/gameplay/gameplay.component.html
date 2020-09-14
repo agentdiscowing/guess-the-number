@@ -1,3 +1,8 @@
+<div class="row">
+    <div class="col">
+    <app-comment-section></app-comment-section>
+  </div>
+  <div class="col">
 <div class='container' id='gameWindow'>
     <div id='messageArea'>
         <div *ngFor="let message of messages;">
@@ -16,4 +21,6 @@
         </div>
         <button class="btn btn-primary mb-2" type="submit" (click)="sendGuess(response.value)">Send</button>
     </div>
+</div>  
+</div>
 </div>
