@@ -6,6 +6,8 @@ namespace GuessTheNumber.Web
     using GuessTheNumber.BLL.Services;
     using GuessTheNumber.DAL;
     using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Kafka.Extensions;
+    using GuessTheNumber.Kafka.Interfaces;
     using GuessTheNumber.Kafka.Producer;
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
@@ -68,8 +70,11 @@ namespace GuessTheNumber.Web
 
             services.AddIdentity<GameContext>();
 
-            var gameProducerConfig = this.Configuration.GetValue<ProducerConfig>("GameProducer");
-            services.AddSingleton(new KafkaProducer(gameProducerConfig));
+            services.AddKafkaProducer(p =>
+            {
+                p.BootstrapServers = "localhost:9092";
+                p.Topic = "game_events";
+            });
 
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));

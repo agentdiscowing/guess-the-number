@@ -4,7 +4,7 @@
     using Confluent.Kafka;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.Kafka;
-    using GuessTheNumber.Kafka.Producer;
+    using GuessTheNumber.Kafka.Interfaces;
     using GuessTheNumber.Web.Events;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
@@ -23,9 +23,9 @@
 
         private CurrentGame currentGame;
 
-        private KafkaProducer producer;
+        private readonly IProducer producer;
 
-        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame, KafkaProducer producer)
+        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame, IProducer producer)
         {
             this.authService = authenticationService;
             this.gameService = gameService;
