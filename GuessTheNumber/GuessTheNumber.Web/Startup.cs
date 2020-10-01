@@ -1,17 +1,18 @@
 namespace GuessTheNumber.Web
 {
     using System;
+    using Confluent.Kafka;
     using GuessTheNumber.BLL.Interfaces;
     using GuessTheNumber.BLL.Services;
     using GuessTheNumber.DAL;
     using GuessTheNumber.DAL.Entities;
+    using GuessTheNumber.Kafka.Producer;
     using GuessTheNumber.Web.Extensions.ServicesExtensions;
     using GuessTheNumber.Web.Filters;
     using GuessTheNumber.Web.Global;
     using GuessTheNumber.Web.Hubs;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
@@ -67,6 +68,9 @@ namespace GuessTheNumber.Web
 
             services.AddIdentity<GameContext>();
 
+            var gameProducerConfig = this.Configuration.GetValue<ProducerConfig>("GameProducer");
+            services.AddSingleton(new KafkaProducer(gameProducerConfig));
+
             services.AddScoped(typeof(IRepository<Game>), typeof(Repository<Game, GameContext>));
             services.AddScoped(typeof(IGameService), typeof(GameService));
             services.AddScoped(typeof(IHistoryService), typeof(HistoryService));
@@ -104,7 +108,6 @@ namespace GuessTheNumber.Web
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                    endpoints.MapHub<GameHub>("/gamehub");
                     endpoints.MapHub<CommentHub>("/commenthub");
                 });
 

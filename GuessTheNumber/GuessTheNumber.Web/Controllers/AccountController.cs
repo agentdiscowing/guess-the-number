@@ -1,16 +1,17 @@
 ﻿namespace GuessTheNumber.Web.Controllers
 {
     using System.Threading.Tasks;
+    using Confluent.Kafka;
     using GuessTheNumber.BLL.Interfaces;
+    using GuessTheNumber.Kafka;
+    using GuessTheNumber.Kafka.Producer;
+    using GuessTheNumber.Web.Events;
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Global;
-    using GuessTheNumber.Web.Hubs;
-    using GuessTheNumber.Web.Interfaces;
     using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.SignalR;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -22,14 +23,14 @@
 
         private CurrentGame currentGame;
 
-        private readonly IHubContext<GameHub, IGameClient> gameHubContext;
+        private KafkaProducer producer;
 
-        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame, IHubContext<GameHub, IGameClient> gameHubContext)
+        public AccountController(IAuthService authenticationService, IGameService gameService, CurrentGame currentGame, KafkaProducer producer)
         {
             this.authService = authenticationService;
             this.gameService = gameService;
             this.currentGame = currentGame;
-            this.gameHubContext = gameHubContext;
+            this.producer = producer;
         }
 
         [HttpPost("login")]
@@ -55,7 +56,7 @@
             this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.currentGame.CurrentGameId);
             if (this.currentGame.CurrentGameOwnerId == this.HttpContext.GetUserId())
             {
-                await this.gameHubContext.Clients.All.SendGameOverMessage();
+                this.producer.Produce<Null, GameOver>("gameEvents", null, new GameOver(), new KafkaSerializer<GameOver>());
             }
 
             return Ok();
