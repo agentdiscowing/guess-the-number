@@ -1,14 +1,16 @@
 ﻿namespace GuessTheNumber.Kafka.Producer
 {
     using Confluent.Kafka;
+    using GuessTheNumber.Kafka.Interfaces;
+    using Microsoft.Extensions.Options;
 
-    public class KafkaProducer
+    public class KafkaProducer : IProducer
     {
-        private readonly ProducerConfig config;
+        private readonly KafkaProducerConfig config;
 
-        public KafkaProducer(ProducerConfig config)
+        public KafkaProducer(IOptions<KafkaProducerConfig> config)
         {
-            this.config = config;
+            this.config = config.Value;
         }
 
         public void Produce<TKey, TValue>(string topic, TKey key, TValue val, ISerializer<TValue> serializer)
