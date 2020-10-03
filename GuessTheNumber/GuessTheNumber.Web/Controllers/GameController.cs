@@ -9,9 +9,11 @@
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Global;
+    using GuessTheNumber.Web.Interfaces;
     using GuessTheNumber.Web.Models.Response;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using static GuessTheNumber.Core.Enums.GameLogicEnums;
 
     [Route("api/[controller]")]
@@ -46,7 +48,11 @@
             var guessResult = this.gameService.MakeGuess(this.HttpContext.GetUserId(), number, this.currentGame.CurrentGameId);
             if (guessResult.Result == GameAttemptResults.WIN)
             {
-                this.producer.Produce<Null, GameWon>("gameEvents", null, new GameWon { WinnerUsername = this.HttpContext.User.Identity.Name }, new KafkaSerializer<GameWon>());
+                this.producer.Produce<Null, GameEvent>(
+                    "gameEvents",
+                    null,
+                    new GameEvent { EventType = 1, Value = JsonConvert.SerializeObject(new GameWon { WinnerUsername = this.HttpContext.User.Identity.Name }) },
+                    new KafkaSerializer<GameEvent>());
             }
 
             return Ok(guessResult.ToResponse());

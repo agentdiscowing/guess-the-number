@@ -1,8 +1,6 @@
-﻿using GuessTheNumber.Kafka.Interfaces;
-
-namespace GuessTheNumber.SignalR.Events
+﻿namespace GuessTheNumber.SignalR.Events
 {
-    public class GameWon: IEvent
+    public class GameWon
     {
         public string WinnerUsername { get; set; }
     }

@@ -1,5 +1,7 @@
 ﻿namespace GuessTheNumber.Kafka.Consumer
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Confluent.Kafka;
@@ -13,7 +15,7 @@
     {
         private readonly KafkaConsumerConfig config;
         private readonly IServiceScopeFactory serviceScopeFactory;
-        private IEventHandler<TKey, TValue> handler;
+        private IEnumerable<IEventHandler<TKey, TValue>> handlers;
 
         public KafkaConsumer(IOptions<KafkaConsumerConfig> config, IServiceScopeFactory serviceScopeFactory)
         {
@@ -25,7 +27,7 @@
         {
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                this.handler = scope.ServiceProvider.GetRequiredService<IEventHandler<TKey, TValue>>();
+                this.handlers = scope.ServiceProvider.GetRequiredService<IEnumerable<IEventHandler<TKey, TValue>>>();
 
                 var builder = new ConsumerBuilder<TKey, TValue>(this.config).SetValueDeserializer(new KafkaSerializer<TValue>());
 
@@ -39,7 +41,7 @@
 
                         if (result != null)
                         {
-                            await this.handler.HandleAsync(result.Message.Key, result.Message.Value);
+                            await this.handlers.Single(h => h.EventType == result.Message.Value.EventType).HandleAsync(result.Message.Key, result.Message.Value);
 
                             consumer.Commit(result);
 

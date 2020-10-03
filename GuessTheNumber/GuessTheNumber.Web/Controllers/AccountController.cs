@@ -9,9 +9,11 @@
     using GuessTheNumber.Web.Extensions;
     using GuessTheNumber.Web.Extensions.ConvertingExtensions;
     using GuessTheNumber.Web.Global;
+    using GuessTheNumber.Web.Interfaces;
     using GuessTheNumber.Web.Models.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -56,7 +58,11 @@
             this.gameService.LeaveGame(this.HttpContext.GetUserId(), this.currentGame.CurrentGameId);
             if (this.currentGame.CurrentGameOwnerId == this.HttpContext.GetUserId())
             {
-                this.producer.Produce<Null, GameOver>("gameEvents", null, new GameOver(), new KafkaSerializer<GameOver>());
+                this.producer.Produce<Null, GameEvent>(
+                    "gameEvents",
+                    null,
+                    new GameEvent { EventType = 2, Value = JsonConvert.SerializeObject(new GameWon()) },
+                    new KafkaSerializer<GameEvent>());
             }
 
             return Ok();

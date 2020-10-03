@@ -7,9 +7,12 @@
     using GuessTheNumber.SignalR.Hubs;
     using GuessTheNumber.SignalR.Interfaces;
     using Microsoft.AspNetCore.SignalR;
+    using Newtonsoft.Json;
 
-    public class GameWonHandler : IEventHandler<Ignore, GameWon>
+    public class GameWonHandler : IEventHandler<Ignore, GameEvent>
     {
+        public int EventType { get; private set; } = 1;
+
         private readonly IHubContext<GameHub, IGameClient> commentHubContext;
 
         public GameWonHandler(IHubContext<GameHub, IGameClient> commentHubContext)
@@ -17,9 +20,10 @@
             this.commentHubContext = commentHubContext;
         }
 
-        public async Task HandleAsync(Ignore key, GameWon @event)
+        public async Task HandleAsync(Ignore key, GameEvent @event)
         {
-            await this.commentHubContext.Clients.All.SendGameWonMessage(@event.WinnerUsername);
+            var value = (GameWon)JsonConvert.DeserializeObject(@event.Value);
+            await this.commentHubContext.Clients.All.SendGameWonMessage(value.WinnerUsername);
         }
     }
 }

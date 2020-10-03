@@ -1,8 +1,6 @@
 ﻿namespace GuessTheNumber.Web.Events
 {
-    using GuessTheNumber.Kafka.Interfaces;
-
-    public class GameWon : IEvent
+    public class GameWon
     {
         public string WinnerUsername { get; set; }
     }

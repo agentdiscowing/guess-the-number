@@ -5,11 +5,14 @@ namespace GuessTheNumber.SignalR
     using GuessTheNumber.SignalR.EventHandlers;
     using GuessTheNumber.SignalR.Events;
     using GuessTheNumber.SignalR.Hubs;
+    using GuessTheNumber.SignalR.Interfaces;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using System;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -27,14 +30,7 @@ namespace GuessTheNumber.SignalR
 
             services.AddSignalR();
 
-            services.AddKafkaConsumer<Ignore, GameWon, GameWonHandler>(p =>
-            {
-                p.Topic = "game_events";
-                p.GroupId = "game_group";
-                p.BootstrapServers = "localhost:9092";
-            });
-
-            services.AddKafkaConsumer<Ignore, GameOver, GameOverHandler>(p =>
+            services.AddKafkaConsumer<Ignore, GameEvent>(new List<Type> { typeof(GameWonHandler), typeof(GameOverHandler) }, p =>
             {
                 p.Topic = "game_events";
                 p.GroupId = "game_group";

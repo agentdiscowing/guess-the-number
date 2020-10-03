@@ -1,6 +1,7 @@
 ﻿namespace GuessTheNumber.Kafka.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using GuessTheNumber.Kafka.Consumer;
     using GuessTheNumber.Kafka.Interfaces;
     using GuessTheNumber.Kafka.Producer;
@@ -8,11 +9,13 @@
 
     public static class RegisterServiceExtensions
     {
-        public static IServiceCollection AddKafkaConsumer<TKey, TValue, THandler>(this IServiceCollection services, Action<KafkaConsumerConfig> configAction)
-            where THandler : class, IEventHandler<TKey, TValue>
+        public static IServiceCollection AddKafkaConsumer<TKey, TValue>(this IServiceCollection services, IEnumerable<Type> handlersTypes, Action<KafkaConsumerConfig> configAction)
             where TValue : IEvent
         {
-            services.AddScoped<IEventHandler<TKey, TValue>, THandler>();
+            foreach (var handlerType in handlersTypes)
+            {
+                services.AddScoped(typeof(IEventHandler<TKey, TValue>), handlerType);
+            }
 
             services.AddHostedService<KafkaConsumer<TKey, TValue>>();
 

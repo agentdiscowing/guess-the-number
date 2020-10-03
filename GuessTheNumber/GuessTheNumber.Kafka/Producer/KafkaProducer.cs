@@ -14,6 +14,7 @@
         }
 
         public void Produce<TKey, TValue>(string topic, TKey key, TValue val, ISerializer<TValue> serializer)
+            where TValue : IEvent
         {
             using (var producer = new ProducerBuilder<TKey, TValue>(this.config).SetValueSerializer(serializer).Build())
             {
